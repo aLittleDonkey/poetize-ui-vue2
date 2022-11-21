@@ -1,0 +1,337 @@
+<template>
+  <div>
+    <div>
+      <div class="handle-box">
+        <el-select v-model="pagination.resourceType" placeholder="资源路径类型" class="handle-select mrb10">
+          <el-option
+            v-for="(item, i) in resourceTypes"
+            :key="i"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        <el-select v-model="pagination.resourceStatus" placeholder="状态" class="handle-select mrb10">
+          <el-option key="1" label="启用" :value="true"></el-option>
+          <el-option key="2" label="禁用" :value="false"></el-option>
+        </el-select>
+        <el-button type="primary" icon="el-icon-search" @click="search()">搜索</el-button>
+        <el-button type="primary" @click="addResourcePathDialog = true">新增资源路径</el-button>
+      </div>
+      <el-table :data="resourcePaths" border class="table" header-cell-class-name="table-header">
+        <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
+        <el-table-column prop="title" label="标题" align="center"></el-table-column>
+        <el-table-column prop="url" label="链接" align="center"></el-table-column>
+
+        <el-table-column prop="type" label="资源类型" align="center"></el-table-column>
+        <el-table-column label="状态" align="center">
+          <template slot-scope="scope">
+            <el-tag :type="scope.row.status === false ? 'danger' : 'success'"
+                    disable-transitions>
+              {{scope.row.status === false ? '禁用' : '启用'}}
+            </el-tag>
+            <el-switch @click.native="changeStatus(scope.row)" v-model="scope.row.status"></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="封面" align="center">
+          <template slot-scope="scope">
+            <el-image :preview-src-list="[scope.row.cover]" class="table-td-thumb" :src="scope.row.cover"
+                      fit="cover"></el-image>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="introduction" label="简介" align="center"></el-table-column>
+        <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+
+        <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
+        <el-table-column label="操作" width="180" align="center">
+          <template slot-scope="scope">
+            <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.row)">编辑</el-button>
+            <el-button type="text" icon="el-icon-delete" style="color: var(--orangeRed)"
+                       @click="handleDelete(scope.row)">
+              删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="pagination">
+        <el-pagination background layout="total, prev, pager, next"
+                       :current-page="pagination.current"
+                       :page-size="pagination.size"
+                       :total="pagination.total"
+                       @current-change="handlePageChange">
+        </el-pagination>
+      </div>
+    </div>
+
+    <el-dialog title="图片"
+               :visible.sync="coverDialog"
+               width="25%"
+               :append-to-body="true"
+               destroy-on-close
+               center>
+      <div>
+        <uploadPicture :isAdmin="true" :prefix="resourcePath.type" @addPicture="addPicture" :maxSize="5"
+                       :maxNumber="1"></uploadPicture>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="资源路径"
+               :visible.sync="addResourcePathDialog"
+               width="50%"
+               :before-close="clearDialog"
+               :append-to-body="true"
+               :close-on-click-modal="false"
+               center>
+      <div>
+        <div>
+          <div style="margin-bottom: 5px">标题：</div>
+          <el-input v-model="resourcePath.title"></el-input>
+          <div style="margin-top: 10px;margin-bottom: 5px">简介：</div>
+          <el-input v-model="resourcePath.introduction"></el-input>
+          <div style="margin-top: 10px;margin-bottom: 5px">封面：</div>
+          <el-input v-model="resourcePath.cover"></el-input>
+          <div style="margin-top: 10px;margin-bottom: 5px">链接：</div>
+          <el-input v-model="resourcePath.url"></el-input>
+          <div style="margin-top: 10px;margin-bottom: 5px">资源类型：</div>
+          <el-select v-model="resourcePath.type" placeholder="资源路径类型" class="handle-select mrb10">
+            <el-option
+              v-for="(item, i) in resourceTypes"
+              :key="i"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          <div style="margin-top: 10px;margin-bottom: 5px">备注：</div>
+          <el-input v-model="resourcePath.remark" type="textarea"></el-input>
+        </div>
+        <div style="display: flex;margin-top: 30px" class="myCenter">
+          <proButton :info="'上传封面'"
+                     @click.native="addResourcePathCover()"
+                     :before="$constant.before_color_1"
+                     :after="$constant.after_color_1"
+                     style="margin-right: 20px">
+          </proButton>
+          <proButton :info="'提交'"
+                     @click.native="addResourcePath()"
+                     :before="$constant.before_color_2"
+                     :after="$constant.after_color_2">
+          </proButton>
+        </div>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+
+  const uploadPicture = () => import( "../common/uploadPicture");
+  const proButton = () => import( "../common/proButton");
+
+  export default {
+    components: {
+      uploadPicture,
+      proButton
+    },
+    data() {
+      return {
+        resourceTypes: [{label: "友链", value: "friendUrl"}],
+        pagination: {
+          current: 1,
+          size: 10,
+          total: 0,
+          resourceType: "",
+          resourceStatus: null
+        },
+        resourcePaths: [],
+        coverDialog: false,
+        addResourcePathDialog: false,
+        isUpdate: false,
+        resourcePath: {
+          title: "",
+          introduction: "",
+          cover: "",
+          url: "",
+          type: "",
+          remark: ""
+        }
+      }
+    },
+
+    computed: {},
+
+    watch: {},
+
+    created() {
+      this.getResourcePaths();
+    },
+
+    mounted() {
+    },
+
+    methods: {
+      addPicture(res) {
+        this.resourcePath.cover = res;
+        this.coverDialog = false;
+      },
+      addResourcePathCover() {
+        if (this.addResourcePathDialog === false) {
+          return;
+        }
+        if (this.$common.isEmpty(this.resourcePath.type)) {
+          this.$message({
+            message: "请选择资源类型！",
+            type: "error"
+          });
+          return;
+        }
+        this.coverDialog = true;
+      },
+      addResourcePath() {
+        if (this.$common.isEmpty(this.resourcePath.title) || this.$common.isEmpty(this.resourcePath.type)) {
+          this.$message({
+            message: "标题和资源类型不能为空！",
+            type: "error"
+          });
+          return;
+        }
+        this.$http.post(this.$constant.baseURL + "/webInfo/" + (this.isUpdate ? "updateResourcePath" : "saveResourcePath"), this.resourcePath, true)
+          .then((res) => {
+            this.$message({
+              message: "保存成功！",
+              type: "success"
+            });
+            this.addResourcePathDialog = false;
+            this.clearDialog();
+            this.search();
+          })
+          .catch((error) => {
+            this.$message({
+              message: error.message,
+              type: "error"
+            });
+          });
+      },
+      search() {
+        this.pagination.total = 0;
+        this.pagination.current = 1;
+        this.getResourcePaths();
+      },
+      getResourcePaths() {
+        this.$http.post(this.$constant.baseURL + "/webInfo/listResourcePath", this.pagination, true)
+          .then((res) => {
+            if (!this.$common.isEmpty(res.data)) {
+              this.resourcePaths = res.data.records;
+              this.pagination.total = res.data.total;
+            }
+          })
+          .catch((error) => {
+            this.$message({
+              message: error.message,
+              type: "error"
+            });
+          });
+      },
+      changeStatus(item) {
+        this.$http.post(this.$constant.baseURL + "/webInfo/updateResourcePath", item, true)
+          .then((res) => {
+            this.$message({
+              message: "修改成功！",
+              type: "success"
+            });
+          })
+          .catch((error) => {
+            this.$message({
+              message: error.message,
+              type: "error"
+            });
+          });
+      },
+      handlePageChange(val) {
+        this.pagination.current = val;
+        this.getResourcePaths();
+      },
+      handleDelete(item) {
+        this.$confirm('确认删除？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'success',
+          center: true
+        }).then(() => {
+          this.$http.get(this.$constant.baseURL + "/webInfo/deleteResourcePath", {id: item.id}, true)
+            .then((res) => {
+              this.search();
+              this.$message({
+                message: "删除成功！",
+                type: "success"
+              });
+            })
+            .catch((error) => {
+              this.$message({
+                message: error.message,
+                type: "error"
+              });
+            });
+        }).catch(() => {
+          this.$message({
+            type: 'success',
+            message: '已取消删除!'
+          });
+        });
+      },
+      handleEdit(item) {
+        this.resourcePath = JSON.parse(JSON.stringify(item));
+        this.addResourcePathDialog = true;
+        this.isUpdate = true;
+      },
+      clearDialog() {
+        this.isUpdate = false;
+        this.addResourcePathDialog = false;
+        this.resourcePath = {
+          title: "",
+          introduction: "",
+          cover: "",
+          url: "",
+          type: "",
+          remark: ""
+        }
+      }
+    }
+  }
+</script>
+
+<style scoped>
+
+  .handle-box {
+    margin-bottom: 20px;
+  }
+
+  .handle-select {
+    width: 200px;
+  }
+
+  .table {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .mrb10 {
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  .table-td-thumb {
+    display: block;
+    margin: auto;
+    width: 40px;
+    height: 40px;
+  }
+
+  .pagination {
+    margin: 20px 0;
+    text-align: right;
+  }
+
+  .el-switch {
+    margin: 5px;
+  }
+</style>

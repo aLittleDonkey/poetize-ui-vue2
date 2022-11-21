@@ -1,0 +1,83 @@
+:root {
+    /* 背景 */
+    --background: white;
+    --gradualBackground: linear-gradient(to right bottom, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+
+    /* 字体 */
+    --fontColor: black;
+    /* 边框 */
+    --borderColor: rgba(0, 0, 0, 0.5);
+    /* 边框 */
+    --borderHoverColor: rgba(110, 110, 110, 0.4);
+    /* 文章字体 */
+    --articleFontColor: #1f1f1f;
+    /* 文章灰色字体 */
+    --articleGreyFontColor: #616161;
+    /* 评论背景颜色 */
+    --commentContent: #F7F9FE;
+
+
+    /* 主题背景 */
+    --themeBackground: orange;
+    /* 主题悬停背景 */
+    --gradualRed: linear-gradient(to right, #ff4b2b, #ff416c);
+
+    /* 水波纹 */
+    --rippleColor: rgba(0, 0, 0, 0.5);
+    /* 导航栏字体 */
+    --toolbarFont: #333333;
+    /* 导航栏背景 */
+    --toolbarBackground: rgba(255, 255, 255, 1);
+    /* 灰色字体 */
+    --greyFont: #797979;
+    --maxGreyFont: #595A5A;
+    /* footer背景 */
+    --gradientBG: linear-gradient(-90deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    /* 白色遮罩 */
+    --whiteMask: rgba(255, 255, 255, 0.3);
+    /* max白色遮罩 */
+    --maxWhiteMask: rgba(255, 255, 255, 0.5);
+    --maxMaxWhiteMask: rgba(255, 255, 255, 0.7);
+    /* mini白色遮罩 */
+    --miniWhiteMask: rgba(255, 255, 255, 0.15);
+    /* 透明 */
+    --transparent: rgba(0, 0, 0, 0);
+    /* mini黑色遮罩 */
+    --miniMask: rgba(0, 0, 0, 0.15);
+    /* 黑色遮罩 */
+    --mask: rgba(0, 0, 0, 0.3);
+    /* 半透明 */
+    --translucent: rgba(0, 0, 0, 0.5);
+    /* 深黑遮罩 */
+    --maxMask: rgba(0, 0, 0, 0.7);
+
+
+    --white: white;
+
+    --red: red;
+    --lightRed: #ff4b2b;
+    --maxLightRed: #ff416c;
+    --orangeRed: #EF794F;
+
+    --azure: #ECF7FE;
+    --blue: rgb(3, 169, 244);
+
+    --lightGray: #DDDDDD;
+    --maxLightGray: #EEEEEE;
+    --maxMaxLightGray: rgba(242, 242, 242, 0.5);
+
+    --lightGreen: #39c5bb;
+
+    --green: #67C23A;
+    --black: black;
+    --lightYellow: #F4E1C0;
+
+    --globalFont: $$$$字体地址;
+
+    --commentURL: url("$$$$图片地址");
+    --toTop: url("$$$$图片地址");
+    --bannerWave1: url("$$$$图片地址") repeat-x;
+    --bannerWave2: url("$$$$图片地址") repeat-x;
+    --verifyImage: url("$$$$图片地址");
+    --toolbar: url("$$$$图片地址");
+}

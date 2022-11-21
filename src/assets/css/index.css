@@ -1,0 +1,257 @@
+/* 通用css */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    color: var(--fontColor);
+    font-family: var(--globalFont), serif;
+    word-break: break-word;
+}
+
+
+/* 图片 */
+.background-image {
+    width: 100vw;
+    height: 100vh;
+    /* 固定位置，不随滚动条滚动 */
+    position: fixed;
+    z-index: -1;
+}
+
+.background-image::before {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .2);
+    content: '';
+}
+
+.background-image-error {
+    background-color: var(--lightGreen);
+    width: 100vw;
+    height: 100vh;
+    /* 固定位置，不随滚动条滚动 */
+    position: fixed;
+    z-index: -1;
+}
+
+/* 模块化背景色及透明度 */
+.background-opacity {
+    /*background: var(--background);*/
+    /*opacity: 0.88;*/
+}
+
+.my-el-image {
+    width: 100%;
+    height: 100%;
+}
+
+.my-el-image .image-slot {
+    width: 100%;
+    height: 100%;
+}
+
+/* 遮罩 */
+.poem-image::before {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: var(--maxMask);
+    content: "";
+}
+
+.user-avatar {
+    cursor: pointer;
+    transition: all 0.3s;
+    user-select: none;
+}
+
+.user-avatar:hover {
+    transform: rotate(360deg);
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: rgba(73, 177, 245, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #49b1f5;
+    background-image: linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.4) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(255, 255, 255, 0.4) 50%,
+            rgba(255, 255, 255, 0.4) 75%,
+            transparent 75%,
+            transparent
+    );
+    border-radius: 1em;
+}
+
+.el-select-dropdown.el-popper ::-webkit-scrollbar {
+    display: none;
+}
+
+/* 选中样式 */
+::selection {
+    background: var(--lightYellow);
+    color: var(--black);
+}
+
+/* 居中 */
+.myCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.transformCenter {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* 两边 */
+.myBetween {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 阴影 */
+.shadow-box-mini {
+    box-shadow: 1px 1px 3px var(--mask);
+}
+
+.shadow-box {
+    box-shadow: 0 1px 20px -6px var(--borderColor);
+    transition: all 0.3s ease;
+}
+
+.shadow-box:hover {
+    box-shadow: 0 5px 10px 5px var(--borderHoverColor);
+}
+
+/* el弹出框样式 */
+.el-message {
+    top: 80px !important;
+    border: 0;
+}
+
+.el-message * {
+    color: var(--white) !important;
+    font-weight: 600;
+}
+
+.el-message--success {
+    background: var(--themeBackground);
+}
+
+.el-message--warning {
+    background: var(--gradientBG);
+}
+
+.el-message--error {
+    background: var(--gradualRed);
+}
+
+/* 看板娘 */
+#waifu-toggle, #waifu {
+    z-index: 100;
+}
+
+#waifu-tips {
+    border: unset;
+    animation: unset;
+    width: 200px;
+    min-height: 60px;
+}
+
+#waifu-tool {
+    right: -10px;
+    bottom: 20px;
+    top: unset;
+}
+
+#waifu #live2d {
+    height: 250px;
+    width: 250px;
+}
+
+/* 图标旋转 */
+.iconRotate {
+    animation: rotate 2s linear infinite;
+}
+
+/* 树洞留言 */
+.baberrage-item .baberrage-msg {
+    padding-right: 5px;
+}
+
+.baberrage-item .normal .baberrage-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.el-upload.el-upload--picture {
+    width: 100%;
+}
+
+.el-upload-dragger {
+    width: 100% !important;
+    height: 100px !important;
+}
+
+/* 导航栏 */
+.toolbarDrawer {
+    position: relative;
+    background: var(--toolbar) center center / cover no-repeat;
+    letter-spacing: 3px;
+}
+
+.toolbarDrawer .el-drawer__header {
+    font-size: 22px;
+    color: var(--white);
+    text-align: center;
+    position: relative;
+}
+
+.toolbarDrawer::before {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: var(--maxMask);
+    content: "";
+}
+
+.small-menu {
+    color: var(--white);
+    font-size: 20px;
+    user-select: none;
+    position: relative;
+}
+
+.small-menu > li {
+    list-style: none;
+    height: 50px;
+    line-height: 50px;
+    cursor: pointer;
+}
+
+
+@media screen and (max-width: 400px) {
+    .el-dialog {
+        width: 75% !important;
+    }
+}
