@@ -68,4 +68,4 @@ npm run build
 
 群名片七天有效，如果需要请加作者好友，然后拉进交流群
 
-<img src="https://github.com/aLittleDonkey/poetize-ui/blob/master/Sara.jpg" width="200" height="200" alt="作者名片"/>
+<img src="https://github.com/aLittleDonkey/poetize-ui/blob/master/Sara.jpg" width="146.6" height="200" alt="作者名片"/>
