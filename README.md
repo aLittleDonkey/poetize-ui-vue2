@@ -55,7 +55,8 @@ npm run build
 
 ## 配置
 全局搜索：$$$$
-Https无法跨域，这些内容需要自己配置
+
+替换成自己自定义的内容，因为Https无法跨域，这些内容需要用自己的。
 
 ## 欢迎进群
 1. 交流（摸鱼）
@@ -67,4 +68,4 @@ Https无法跨域，这些内容需要自己配置
 
 群名片七天有效，如果需要请加作者好友，然后拉进交流群
 
-![作者名片](Sara.jpg)
+<img src="https://github.com/aLittleDonkey/poetize-ui/blob/master/Sara.jpg" width="200" height="200" alt="作者名片"/>
