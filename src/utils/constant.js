@@ -13,7 +13,7 @@ export default {
   hitokoto: "https://v1.hitokoto.cn",
   tocbot: "https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js",
   jinrishici: "https://v1.jinrishici.com/all.json",
-  random_image: "https://api.lixingyong.com/api/images?home=home&type=url&itype=album&id=p62&t=5&",
+  random_image: "$$$$随机图片",
   //前后端定义的密钥，AES使用16位
   cryptojs_key: "$$$$密码加密传输",
   qiniuUrl: "https://upload.qiniup.com",

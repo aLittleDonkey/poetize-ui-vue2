@@ -172,6 +172,7 @@
         <div class="myCenter" style="margin-bottom: 20px">
           <el-date-picker
             v-model="newsTime"
+            value-format="yyyy-MM-dd HH:mm:ss"
             type="datetime"
             align="center"
             placeholder="选择日期时间">
