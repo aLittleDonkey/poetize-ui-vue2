@@ -73,8 +73,10 @@ npm run build
 Gitee
 - 博客：https://gitee.com/littledokey/poetize-vue2.git
 - 聊天室：https://gitee.com/littledokey/poetize-im-vue3.git
+- 后端：https://github.com/aLittleDonkey/poetize.git
 
 ## 欢迎关注作者B站
 B站搜索用户【寻国记】，博客介绍与搭建教程。
 
-【挑战最美博客！个人博客网站食用教程。这是一个 SpringBoot 与 Vue 的产物，在此公开，一起学习，共同成长。】 https://www.bilibili.com/video/BV1eM41167Ks/?share_source=copy_web
+【挑战最美博客！个人博客网站食用教程。这是一个 SpringBoot 与 Vue 的产物，在此公开，一起学习，共同成长。】
+https://www.bilibili.com/video/BV1eM41167Ks/?share_source=copy_web
