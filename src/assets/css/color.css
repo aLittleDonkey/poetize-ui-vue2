@@ -72,12 +72,12 @@
     --black: black;
     --lightYellow: #F4E1C0;
 
-    --globalFont: $$$$字体地址;
+    --globalFont: SmileySans;
 
-    --commentURL: url("$$$$图片地址");
-    --toTop: url("$$$$图片地址");
-    --bannerWave1: url("$$$$图片地址") repeat-x;
-    --bannerWave2: url("$$$$图片地址") repeat-x;
-    --verifyImage: url("$$$$图片地址");
-    --toolbar: url("$$$$图片地址");
+    --commentURL: url(../file/comment.jpg);
+    --toTop: url(../file/top.jpg);
+    --bannerWave1: url(../file/bannerwave1.png) repeat-x;
+    --bannerWave2: url(../file/bannerwave2.png) repeat-x;
+    --verifyImage: url(../file/bg1.jpg);
+    --toolbar: url(../file/bg.jpg);
 }

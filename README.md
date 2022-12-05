@@ -70,7 +70,7 @@ npm run build
 
 <img src="https://github.com/aLittleDonkey/poetize-ui/blob/master/Sara.jpg" width="146.6" height="200" alt="作者名片"/>
 
-该仓库停止更新，请移步Gitee
+Gitee
 - 博客：https://gitee.com/littledokey/poetize-vue2.git
 - 聊天室：https://gitee.com/littledokey/poetize-im-vue3.git
 

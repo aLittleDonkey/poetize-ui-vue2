@@ -9,6 +9,11 @@ body {
     word-break: break-word;
 }
 
+@font-face {
+    font-family: SmileySans;
+    src: url(../fonts/SmileySans.otf);
+    font-display: swap;
+}
 
 /* 图片 */
 .background-image {
