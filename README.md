@@ -73,7 +73,7 @@ npm run build
 Gitee
 - 博客：https://gitee.com/littledokey/poetize-vue2.git
 - 聊天室：https://gitee.com/littledokey/poetize-im-vue3.git
-- 后端：https://github.com/aLittleDonkey/poetize.git
+- 后端：https://gitee.com/littledokey/poetize.git
 
 ## 欢迎关注作者B站
 B站搜索用户【寻国记】，博客介绍与搭建教程。
