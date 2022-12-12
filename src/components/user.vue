@@ -76,9 +76,9 @@
               </div>
               <div>
                 <div v-if="!$common.isEmpty(currentUser.phoneNumber)">
-                  {{ currentUser.phoneNumber }} <span class="changeInfo" @click="changeDialog('修改手机号')">修改</span>
+                  {{ currentUser.phoneNumber }} <span class="changeInfo" @click="changeDialog('修改手机号')">修改（功能未接入）</span>
                 </div>
-                <div v-else><span class="changeInfo" @click="changeDialog('绑定手机号')">绑定手机号</span></div>
+                <div v-else><span class="changeInfo" @click="changeDialog('绑定手机号')">绑定手机号（功能未接入）</span></div>
               </div>
               <div>
                 <div v-if="!$common.isEmpty(currentUser.email)">
@@ -121,6 +121,7 @@
                width="30%"
                :before-close="clearDialog"
                :append-to-body="true"
+               :close-on-click-modal="false"
                center>
       <div class="myCenter" style="flex-direction: column">
         <div>

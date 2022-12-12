@@ -18,7 +18,7 @@
                  placeholder="留下点什么啦~"
                  v-model="messageContent"
                  @click="show = true"
-                 maxlength="150"/>
+                 maxlength="60"/>
           <button v-show="show"
                   style="margin-left: 12px;cursor: pointer;width: 20%"
                   @click="submitMessage"

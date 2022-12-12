@@ -5,7 +5,7 @@
       class="comment-textarea"
       v-model="commentContent"
       placeholder="写下点什么..."
-      maxlength="2500"/>
+      maxlength="1000"/>
     <!-- 按钮 -->
     <div class="myBetween" style="margin-bottom: 10px">
       <div style="display: flex">

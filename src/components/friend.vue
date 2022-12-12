@@ -95,6 +95,7 @@
         pagination: {
           current: 1,
           size: 9999,
+          desc: false,
           resourceType: "friendUrl"
         },
         friendList: [],
