@@ -52,7 +52,7 @@ export default {
     content = content.replace(/\[[^\[^\]]+\]/g, (word) => {
       let index = constant.emojiList.indexOf(word.replace("[", "").replace("]", ""));
       if (index > -1) {
-        let url = "https://pzh-blog-photo.oss-cn-shenzhen.aliyuncs.com/emoji/q" + (index + 1) + ".gif";
+        let url = "$$$$表情包地址/q" + (index + 1) + ".gif";
         return '<img style="vertical-align: middle;width: 32px;height: 32px" src="' + url + '" title="' + word + '"/>';
       } else {
         return word;

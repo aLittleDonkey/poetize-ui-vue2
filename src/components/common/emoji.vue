@@ -40,7 +40,7 @@
         for (let i = 0; i < emojiList.length; i++) {
           emojiName = "[" + emojiList[i] + "]";
           let j = i + 1;
-          url = "https://pzh-blog-photo.oss-cn-shenzhen.aliyuncs.com/emoji/q" + j + ".gif";
+          url = "$$$$表情包地址/q" + j + ".gif";
           result[emojiName] = url;
         }
         return result;
