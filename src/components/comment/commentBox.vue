@@ -88,14 +88,6 @@
           return;
         }
 
-        if (this.$common.isEmpty(this.$store.state.currentUser.email)) {
-          this.$message({
-            message: "请先绑定邮箱！",
-            type: "error"
-          });
-          return;
-        }
-
         this.showPicture = true;
       },
 
@@ -121,14 +113,6 @@
           return;
         }
 
-        if (this.$common.isEmpty(this.$store.state.currentUser.email)) {
-          this.$message({
-            message: "请先绑定邮箱！",
-            type: "error"
-          });
-          return;
-        }
-
         this.commentContent = "";
         this.$emit("showGraffiti");
       },
@@ -141,18 +125,10 @@
           return;
         }
 
-        if (this.$common.isEmpty(this.$store.state.currentUser.email)) {
-          this.$message({
-            message: "请先绑定邮箱！",
-            type: "error"
-          });
-          return;
-        }
-
         if (this.commentContent.trim() === "") {
           this.$message({
             message: "你还没写呢~",
-            type: "warning",
+            type: "warning"
           });
           return;
         }

@@ -3,7 +3,7 @@
     <!-- 评论框 -->
     <div style="margin-bottom: 40px">
       <div class="comment-head">
-        <i class="el-icon-edit-outline" style="font-weight: bold;font-size: 22px;"></i> 评论
+        <i class="el-icon-edit-outline" style="font-weight: bold;font-size: 22px;"></i> 留言
       </div>
       <div>
         <!-- 文字评论 -->
@@ -26,7 +26,7 @@
       <!-- 评论数量 -->
       <div class="commentInfo-title">
         <span style="font-size: 1.15rem">Comments | </span>
-        <span>{{ total }} 条评论</span>
+        <span>{{ total }} 条留言</span>
       </div>
       <!-- 评论详情 -->
       <div id="comment-content" class="commentInfo-detail"
@@ -40,7 +40,7 @@
           <div style="display: flex;justify-content: space-between">
             <div>
               <span class="commentInfo-username">{{ item.username }}</span>
-              <span class="commentInfo-master" v-if="item.userId === userId">博主</span>
+              <span class="commentInfo-master" v-if="item.userId === userId">主人翁</span>
               <span class="commentInfo-other">{{ $common.getDateDiff(item.createTime) }}</span>
             </div>
             <div class="commentInfo-reply" @click="replyDialog(item, item)">
@@ -62,7 +62,7 @@
                 <div style="display: flex;justify-content: space-between">
                   <div>
                     <span class="commentInfo-username-small">{{ childItem.username }}</span>
-                    <span class="commentInfo-master" v-if="childItem.userId === userId">博主</span>
+                    <span class="commentInfo-master" v-if="childItem.userId === userId">主人翁</span>
                     <span class="commentInfo-other">{{ $common.getDateDiff(childItem.createTime) }}</span>
                   </div>
                   <div>
@@ -100,10 +100,10 @@
     </div>
 
     <div v-else class="myCenter" style="color: var(--greyFont)">
-      <i>来发第一个评论啦~</i>
+      <i>来发第一个留言啦~</i>
     </div>
 
-    <el-dialog title="评论"
+    <el-dialog title="留言"
                :visible.sync="replyDialogVisible"
                width="30%"
                :before-close="handleClose"
@@ -134,6 +134,9 @@
       source: {
         type: Number
       },
+      type: {
+        type: String
+      },
       userId: {
         type: Number
       }
@@ -151,6 +154,7 @@
           size: 10,
           total: 0,
           source: this.source,
+          commentType: this.type,
           floorCommentId: null
         }
       };
@@ -171,7 +175,7 @@
         this.getComments(this.pagination);
       },
       getTotal() {
-        this.$http.get(this.$constant.baseURL + "/comment/getCommentCount", {source: this.source})
+        this.$http.get(this.$constant.baseURL + "/comment/getCommentCount", {source: this.source, type: this.type})
           .then((res) => {
             if (!this.$common.isEmpty(res.data)) {
               this.total = res.data;
@@ -191,6 +195,7 @@
           size: 5,
           total: 0,
           source: this.source,
+          commentType: this.type,
           floorCommentId: floorComment.id
         }
         this.getComments(pagination, floorComment, true);
@@ -243,6 +248,7 @@
       submitComment(commentContent) {
         let comment = {
           source: this.source,
+          type: this.type,
           commentContent: commentContent
         };
 
@@ -257,6 +263,7 @@
               size: 10,
               total: 0,
               source: this.source,
+              commentType: this.type,
               floorCommentId: null
             }
             this.getComments(this.pagination);
@@ -272,6 +279,7 @@
       submitReply(commentContent) {
         let comment = {
           source: this.source,
+          type: this.type,
           floorCommentId: this.floorComment.id,
           commentContent: commentContent,
           parentCommentId: this.replyComment.id,
@@ -287,6 +295,7 @@
               size: 5,
               total: 0,
               source: this.source,
+              commentType: this.type,
               floorCommentId: floorComment.id
             }
             this.getComments(pagination, floorComment);

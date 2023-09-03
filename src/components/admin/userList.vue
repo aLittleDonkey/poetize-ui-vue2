@@ -20,6 +20,12 @@
         <el-table-column prop="username" label="用户名" align="center"></el-table-column>
         <el-table-column prop="phoneNumber" label="手机号" align="center"></el-table-column>
         <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
+        <el-table-column label="赞赏" width="100" align="center">
+          <template slot-scope="scope">
+            <el-input size="medium" maxlength="30" v-model="scope.row.admire"
+                      @blur="changeUserAdmire(scope.row)"></el-input>
+          </template>
+        </el-table-column>
         <el-table-column label="用户状态" align="center">
           <template slot-scope="scope">
             <el-tag :type="scope.row.userStatus === false ? 'danger' : 'success'"
@@ -31,7 +37,7 @@
         </el-table-column>
         <el-table-column label="头像" align="center">
           <template slot-scope="scope">
-            <el-image class="table-td-thumb" :src="scope.row.avatar" fit="cover"></el-image>
+            <el-image lazy class="table-td-thumb" :src="scope.row.avatar" fit="cover"></el-image>
           </template>
         </el-table-column>
         <el-table-column label="性别" align="center">
@@ -192,6 +198,38 @@
               type: "error"
             });
           });
+      },
+      changeUserAdmire(user) {
+        if (!this.$common.isEmpty(user.admire)) {
+          this.$confirm('确认保存？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'success',
+            center: true
+          }).then(() => {
+            this.$http.get(this.$constant.baseURL + "/admin/user/changeUserAdmire", {
+              userId: user.id,
+              admire: user.admire
+            }, true)
+              .then((res) => {
+                this.$message({
+                  message: "修改成功！",
+                  type: "success"
+                });
+              })
+              .catch((error) => {
+                this.$message({
+                  message: error.message,
+                  type: "error"
+                });
+              });
+          }).catch(() => {
+            this.$message({
+              type: 'success',
+              message: '已取消保存!'
+            });
+          });
+        }
       },
       editUser(user) {
         this.changeUser.id = user.id;

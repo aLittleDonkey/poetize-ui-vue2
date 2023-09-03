@@ -8,7 +8,7 @@ import common from './utils/common'
 import constant from './utils/constant'
 import mavonEditor from 'mavon-editor'
 //引入js
-//import './utils/live2d'
+import './utils/live2d'
 import './utils/title'
 //引入css
 import './assets/css/animation.css'
@@ -18,12 +18,8 @@ import './assets/css/color.css'
 import './assets/css/markdown-highlight.css'
 import './assets/css/font-awesome.min.css'
 import 'mavon-editor/dist/css/index.css'
-//点击涟漪效果
-import Ripple from 'vue-ripple-directive'
-import {vueBaberrage} from 'vue-baberrage'
 
-Ripple.color = 'var(--rippleColor)'
-Vue.directive("ripple", Ripple)
+import {vueBaberrage} from 'vue-baberrage'
 
 Vue.use(ElementUI)
 Vue.use(vueBaberrage)

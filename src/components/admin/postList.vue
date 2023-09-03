@@ -45,7 +45,7 @@
       </el-table-column>
       <el-table-column label="封面" align="center">
         <template slot-scope="scope">
-          <el-image class="table-td-thumb" :src="scope.row.articleCover" fit="cover"></el-image>
+          <el-image lazy class="table-td-thumb" :src="scope.row.articleCover" fit="cover"></el-image>
         </template>
       </el-table-column>
       <el-table-column label="是否启用评论" align="center">
@@ -116,7 +116,7 @@
     watch: {
       'pagination.sortId'(newVal) {
         this.pagination.labelId = null;
-        if(!this.$common.isEmpty(newVal) && !this.$common.isEmpty(this.labels)){
+        if (!this.$common.isEmpty(newVal) && !this.$common.isEmpty(this.labels)) {
           this.labelsTemp = this.labels.filter(l => l.sortId === newVal);
         }
       }

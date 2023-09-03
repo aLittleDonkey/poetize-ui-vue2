@@ -1,14 +1,19 @@
 <template>
   <div>
     <div style="margin-bottom: 20px">
+      <el-select v-if="isBoss" v-model="pagination.commentType" placeholder="评论来源类型" style="margin-right: 10px">
+        <el-option key="1" label="文章评论" value="article"></el-option>
+        <el-option key="2" label="树洞留言" value="message"></el-option>
+      </el-select>
       <el-input class="my-input" type="number" style="width: 140px;margin-right: 10px" v-model="pagination.source"
-                placeholder="文章ID"></el-input>
+                placeholder="评论来源标识"></el-input>
       <el-button type="primary" icon="el-icon-search" @click="searchComments()">搜索</el-button>
       <el-button type="danger" @click="clearSearch()">清除参数</el-button>
     </div>
     <el-table :data="comments" border class="table" header-cell-class-name="table-header">
       <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
-      <el-table-column prop="source" label="文章ID" align="center"></el-table-column>
+      <el-table-column prop="source" label="评论来源标识" align="center"></el-table-column>
+      <el-table-column prop="type" label="评论来源类型" align="center"></el-table-column>
       <el-table-column prop="userId" label="发表用户ID" align="center"></el-table-column>
       <el-table-column prop="likeCount" label="点赞数" align="center"></el-table-column>
       <el-table-column prop="commentContent" label="评论内容" align="center"></el-table-column>
@@ -43,7 +48,8 @@
           current: 1,
           size: 10,
           total: 0,
-          source: null
+          source: null,
+          commentType: ""
         },
         comments: []
       }
@@ -66,7 +72,8 @@
           current: 1,
           size: 10,
           total: 0,
-          source: null
+          source: null,
+          commentType: ""
         }
         this.getComments();
       },

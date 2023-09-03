@@ -13,7 +13,7 @@
           <span v-else-if="scope.row.sortType === 1">普通分类</span>
         </template>
       </el-table-column>
-      <el-table-column prop="priority" label="导航栏分类优先级" align="center"></el-table-column>
+      <el-table-column prop="priority" label="分类优先级" align="center"></el-table-column>
       <el-table-column prop="countOfSort" label="文章总数" align="center"></el-table-column>
       <el-table-column label="操作" width="380" align="center">
         <template slot-scope="scope">
@@ -77,9 +77,9 @@
         <el-input placeholder="请输入分类描述" v-model="sortForHttp.sortDescription">
           <template slot="prepend">分类描述</template>
         </el-input>
-        <el-input type="number" v-if="sortForHttp.sortType === 0" placeholder="请输入整数，数字小的在前面"
+        <el-input type="number" placeholder="请输入整数，数字小的在前面"
                   v-model="sortForHttp.priority">
-          <template slot="prepend">导航栏分类优先级</template>
+          <template slot="prepend">分类优先级</template>
         </el-input>
       </div>
 
@@ -189,18 +189,11 @@
       },
       saveSortEdit() {
         if (this.$common.isEmpty(this.sortForHttp.sortType) ||
+          this.$common.isEmpty(this.sortForHttp.priority) ||
           this.$common.isEmpty(this.sortForHttp.sortName) ||
           this.$common.isEmpty(this.sortForHttp.sortDescription)) {
           this.$message({
             message: "请完善所有分类信息！",
-            type: "error"
-          });
-          return;
-        }
-
-        if (this.sortForHttp.sortType === 0 && this.$common.isEmpty(this.sortForHttp.priority)) {
-          this.$message({
-            message: "导航栏分类必须输入优先级！",
             type: "error"
           });
           return;

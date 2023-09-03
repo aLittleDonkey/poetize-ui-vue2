@@ -14,7 +14,7 @@
       </svg>
       发现
     </div>
-    <div class="recent-post-item shadow-box background-opacity wow"
+    <div class="recent-post-item shadow-box background-opacity"
          v-for="(article, index) in articleList"
          :key="index"
          :class="{'my-animation-slide-top': index % 2 !== 0,'my-animation-slide-bottom': index % 2 === 0}"
@@ -23,6 +23,7 @@
       <div class="recent-post-item-image" :class="{ leftImage: index % 2 !== 0, rightImage: index % 2 === 0 }">
         <el-image class="my-el-image"
                   v-once
+                  lazy
                   :src="!$common.isEmpty(article.articleCover)?article.articleCover:$constant.random_image+new Date()+Math.floor(Math.random()*10)"
                   fit="cover">
           <div slot="error" class="image-slot myCenter" style="background-color: var(--lightGreen)">
@@ -48,7 +49,12 @@
           发布于 {{ article.createTime }}
         </div>
         <!-- 标题 -->
-        <h3>{{ article.articleTitle }}</h3>
+
+        <el-tooltip placement="top" effect="light">
+          <div slot="content">{{ article.articleTitle }}</div>
+          <h3>{{ article.articleTitle }}</h3>
+        </el-tooltip>
+
         <!-- 信息 -->
         <div class="post-meta" style="margin-bottom: 15px">
           <span>
@@ -180,7 +186,7 @@
     cursor: pointer;
     overflow: hidden;
     border-radius: 10px;
-    animation: zoomIn 0.8s ease-in-out;
+    animation: hideToShow 1s ease-in-out;
   }
 
   .recent-post-item-image {
@@ -289,7 +295,7 @@
 
     .recent-post-item-image {
       width: 100%;
-      height: 170px;
+      height: 200px;
     }
 
     .leftImage {
@@ -305,8 +311,12 @@
 
     .recent-post-item-post {
       width: 100%;
-      height: 280px;
+      height: 250px;
       position: relative;
+    }
+
+    .recent-post-desc {
+      -webkit-line-clamp: 3;
     }
 
     .leftImage .sort-label {

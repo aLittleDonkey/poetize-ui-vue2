@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "set NODE_OPTIONS=--openssl-legacy-provider & vue-cli-service serve",
+    "build": "set NODE_OPTIONS=--openssl-legacy-provider & vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -17,10 +17,9 @@
     "qs": "^6.10.3",
     "vue": "^2.6.11",
     "vue-baberrage": "^3.2.4",
-    "vue-ripple-directive": "^2.0.1",
     "vue-router": "^3.2.0",
-    "vuex": "^3.4.0",
-    "vuex-persistedstate": "^4.0.0"
+    "vue-seamless-scroll": "^1.1.23",
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

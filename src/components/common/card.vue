@@ -7,6 +7,7 @@
       <div class="card-image">
         <el-image class="my-el-image"
                   v-once
+                  lazy
                   :src="resourcePath.cover"
                   fit="cover">
           <div slot="error" class="image-slot myCenter" style="background-color: var(--lightGreen)">

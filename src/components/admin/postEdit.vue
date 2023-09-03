@@ -18,7 +18,7 @@
     <el-form :model="article" :rules="rules" ref="ruleForm" label-width="150px"
              class="demo-ruleForm">
       <el-form-item label="标题" prop="articleTitle">
-        <el-input v-model="article.articleTitle"></el-input>
+        <el-input maxlength="30" v-model="article.articleTitle"></el-input>
       </el-form-item>
 
       <el-form-item label="内容" prop="articleContent">
@@ -50,20 +50,21 @@
       </el-form-item>
 
       <el-form-item v-if="article.viewStatus === false" label="不可见时的访问密码" prop="password">
-        <el-input v-model="article.password"></el-input>
+        <el-input maxlength="30" v-model="article.password"></el-input>
       </el-form-item>
 
       <el-form-item label="封面" prop="articleCover">
         <div style="display: flex">
           <el-input v-model="article.articleCover"></el-input>
           <el-image class="table-td-thumb"
+                    lazy
                     style="margin-left: 10px"
                     :preview-src-list="[article.articleCover]"
                     :src="article.articleCover"
                     fit="cover"></el-image>
         </div>
         <uploadPicture :isAdmin="true" :prefix="'articleCover'" style="margin-top: 10px" @addPicture="addArticleCover"
-                       :maxSize="5"
+                       :maxSize="2"
                        :maxNumber="1"></uploadPicture>
       </el-form-item>
       <el-form-item label="分类" prop="sortId">
@@ -104,7 +105,6 @@
     data() {
       return {
         id: this.$route.query.id,
-        token: "",
         article: {
           articleTitle: "",
           articleContent: "",
@@ -163,7 +163,6 @@
 
     created() {
       this.getSortAndLabel();
-      this.getUpToken();
     },
 
     mounted() {
@@ -171,40 +170,35 @@
     },
 
     methods: {
-      getUpToken() {
-        this.$http.get(this.$constant.baseURL + "/qiniu/getUpToken", {}, true)
-          .then((res) => {
-            if (!this.$common.isEmpty(res.data)) {
-              this.token = res.data;
-            }
-          })
-          .catch((error) => {
-            this.$message({
-              message: error.message,
-              type: "error"
-            });
-          });
-      },
       imgAdd(pos, file) {
-        if (this.$common.isEmpty(this.token)) {
-          this.$message({
-            message: "上传出错！",
-            type: "warning"
-          });
-          return;
+        let suffix = "";
+        if (file.name.lastIndexOf('.') !== -1) {
+          suffix = file.name.substring(file.name.lastIndexOf('.'));
         }
-
+        let key = "articlePicture" + "/" + this.$store.state.currentAdmin.username.replace(/[^a-zA-Z]/g, '') + this.$store.state.currentAdmin.id + new Date().getTime() + Math.floor(Math.random() * 1000) + suffix;
         let fd = new FormData();
         fd.append("file", file);
-        fd.append("token", this.token);
-        fd.append("key", "articlePicture" + "/" + this.$store.state.currentAdmin.username.replace(/[^a-zA-Z]/g, '') + this.$store.state.currentAdmin.id + new Date().getTime());
+        fd.append("key", key);
 
-        this.$http.uploadQiniu(this.$constant.qiniuUrl, fd)
+        this.$http.get(this.$constant.baseURL + "/qiniu/getUpToken", {key: key}, true)
           .then((res) => {
-            if (!this.$common.isEmpty(res.key)) {
-              let url = this.$constant.qiniuDownload + res.key;
-              this.$common.saveResource(this, "articlePicture", url, true);
-              this.$refs.md.$img2Url(pos, url);
+            if (!this.$common.isEmpty(res.data)) {
+              fd.append("token", res.data);
+
+              this.$http.uploadQiniu(this.$constant.qiniuUrl, fd)
+                .then((res) => {
+                  if (!this.$common.isEmpty(res.key)) {
+                    let url = this.$constant.qiniuDownload + res.key;
+                    this.$common.saveResource(this, "articlePicture", url, file.size, file.type, true);
+                    this.$refs.md.$img2Url(pos, url);
+                  }
+                })
+                .catch((error) => {
+                  this.$message({
+                    message: error.message,
+                    type: "error"
+                  });
+                });
             }
           })
           .catch((error) => {

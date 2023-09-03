@@ -85,7 +85,6 @@
     },
     data() {
       return {
-        token: "",
         context: {},
         canvasMoveUse: false,
         // 存储当前表面状态数组-上一步
@@ -144,25 +143,8 @@
       this.setCanvasStyle();
     },
     created() {
-      if (!this.$common.isEmpty(this.$store.state.currentUser) && !this.$common.isEmpty(this.$store.state.currentUser.email)) {
-        this.getUpToken();
-      }
     },
     methods: {
-      getUpToken() {
-        this.$http.get(this.$constant.baseURL + "/qiniu/getUpToken")
-          .then((res) => {
-            if (!this.$common.isEmpty(res.data)) {
-              this.token = res.data;
-            }
-          })
-          .catch((error) => {
-            this.$message({
-              message: error.message,
-              type: "error"
-            });
-          });
-      },
       canvasOutMove(e) {
         const canvas = document.querySelector("#canvas");
         if (e.target !== canvas) {
@@ -264,18 +246,10 @@
           return;
         }
 
-        if (this.$common.isEmpty(this.token)) {
-          this.$message({
-            message: "上传出错！",
-            type: "warning"
-          });
-          return;
-        }
-
         if (this.preDrawAry.length < 1) {
           this.$message({
             message: "你还没画呢~",
-            type: "warning",
+            type: "warning"
           });
           return;
         }
@@ -291,19 +265,32 @@
           u8arr[n] = str.charCodeAt(n);
         }
         let obj = new Blob([u8arr], {type: mine});
+        let key = "graffiti" + "/" + this.$store.state.currentUser.username.replace(/[^a-zA-Z]/g, '') + this.$store.state.currentUser.id + new Date().getTime() + Math.floor(Math.random() * 1000) + ".png";
         let fd = new FormData();
         fd.append("file", obj);
-        fd.append("token", this.token);
-        fd.append("key", "graffiti" + "/" + this.$store.state.currentUser.username.replace(/[^a-zA-Z]/g, '') + this.$store.state.currentUser.id + new Date().getTime());
+        fd.append("key", key);
 
-        this.$http.uploadQiniu(this.$constant.qiniuUrl, fd)
+        this.$http.get(this.$constant.baseURL + "/qiniu/getUpToken", {key: key})
           .then((res) => {
-            if (!this.$common.isEmpty(res.key)) {
-              this.clearContext();
-              let url = this.$constant.qiniuDownload + res.key;
-              this.$common.saveResource(this, "graffiti", url);
-              let img = "<你画我猜," + url + ">";
-              this.$emit("addGraffitiComment", img);
+            if (!this.$common.isEmpty(res.data)) {
+              fd.append("token", res.data);
+
+              this.$http.uploadQiniu(this.$constant.qiniuUrl, fd)
+                .then((res) => {
+                  if (!this.$common.isEmpty(res.key)) {
+                    this.clearContext();
+                    let url = this.$constant.qiniuDownload + res.key;
+                    this.$common.saveResource(this, "graffiti", url, obj.size, obj.type);
+                    let img = "<你画我猜," + url + ">";
+                    this.$emit("addGraffitiComment", img);
+                  }
+                })
+                .catch((error) => {
+                  this.$message({
+                    message: error.message,
+                    type: "error"
+                  });
+                });
             }
           })
           .catch((error) => {

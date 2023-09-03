@@ -2,6 +2,7 @@
     /* 背景 */
     --background: white;
     --gradualBackground: linear-gradient(to right bottom, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    --favoriteBg: #f7f9fe;
 
     /* 字体 */
     --fontColor: black;
@@ -22,8 +23,6 @@
     /* 主题悬停背景 */
     --gradualRed: linear-gradient(to right, #ff4b2b, #ff416c);
 
-    /* 水波纹 */
-    --rippleColor: rgba(0, 0, 0, 0.5);
     /* 导航栏字体 */
     --toolbarFont: #333333;
     /* 导航栏背景 */
@@ -75,9 +74,12 @@
     --globalFont: SmileySans;
 
     --commentURL: url(../file/comment.jpg);
+    --springBg: url(../file/bg1.jpg);
+    --admireImage: url(../file/bg1.jpg);
     --toTop: url(../file/top.jpg);
     --bannerWave1: url(../file/bannerwave1.png) repeat-x;
     --bannerWave2: url(../file/bannerwave2.png) repeat-x;
     --verifyImage: url(../file/bg1.jpg);
     --toolbar: url(../file/bg.jpg);
+    --love: url(../file/bg.jpg);
 }

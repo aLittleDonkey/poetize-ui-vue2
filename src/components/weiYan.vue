@@ -7,7 +7,11 @@
 
     <div style="background: var(--background);animation: hideToShow 2.5s">
       <div>
-        <treeHole :treeHoleList="treeHoleList" @launch="launch" @deleteTreeHole="deleteTreeHole"></treeHole>
+        <treeHole :treeHoleList="treeHoleList"
+                  :avatar="!$common.isEmpty($store.state.currentUser)?$store.state.currentUser.avatar:$store.state.webInfo.avatar"
+                  @launch="launch"
+                  @deleteTreeHole="deleteTreeHole">
+        </treeHole>
         <proPage :current="pagination.current"
                  :size="pagination.size"
                  :total="pagination.total"
@@ -103,14 +107,6 @@
           return;
         }
 
-        if (this.$common.isEmpty(this.$store.state.currentUser.email)) {
-          this.$message({
-            message: "请先绑定邮箱！",
-            type: "error"
-          });
-          return;
-        }
-
         this.weiYanDialogVisible = true;
       },
       handleClose() {
@@ -138,14 +134,6 @@
         if (this.$common.isEmpty(this.$store.state.currentUser)) {
           this.$message({
             message: "请先登录！",
-            type: "error"
-          });
-          return;
-        }
-
-        if (this.$common.isEmpty(this.$store.state.currentUser.email)) {
-          this.$message({
-            message: "请先绑定邮箱！",
             type: "error"
           });
           return;

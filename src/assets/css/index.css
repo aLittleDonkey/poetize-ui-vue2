@@ -62,7 +62,7 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: var(--maxMask);
+    background-color: var(--translucent);
     content: "";
 }
 
@@ -209,7 +209,7 @@ body {
 }
 
 
-.el-upload.el-upload--picture {
+.el-upload.el-upload--picture, .el-upload.el-upload--text {
     width: 100%;
 }
 
@@ -254,9 +254,37 @@ body {
     cursor: pointer;
 }
 
+.el-tooltip__popper.is-light {
+    background: var(--lightGreen);
+    border-radius: 10px;
+    color: var(--white);
+    padding: 12px 20px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    line-height: 1.5;
+    font-size: 1.2rem;
+    border: unset;
+}
+
+.el-tooltip__popper .popper__arrow {
+    border-style: unset;
+}
+
+
+@media screen and (max-width: 800px) {
+    .el-dialog {
+        width: 70% !important;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .el-dialog {
+        width: 80% !important;
+    }
+}
 
 @media screen and (max-width: 400px) {
     .el-dialog {
-        width: 75% !important;
+        width: 90% !important;
     }
 }

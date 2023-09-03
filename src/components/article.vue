@@ -5,6 +5,7 @@
       <!-- 背景图片 -->
       <el-image class="article-image my-el-image"
                 v-once
+                lazy
                 :src="!$common.isEmpty(article.articleCover)?article.articleCover:$constant.random_image+new Date()+Math.floor(Math.random()*10)"
                 fit="cover">
         <div slot="error" class="image-slot">
@@ -151,7 +152,7 @@
 
         <!-- 评论 -->
         <div v-if="article.commentStatus === true">
-          <comment :source="article.id" :userId="article.userId"></comment>
+          <comment :type="'article'" :source="article.id" :userId="article.userId"></comment>
         </div>
       </div>
 

@@ -13,6 +13,7 @@
         <el-image style="animation: header-effect 2s"
                   class="background-image"
                   v-once
+                  lazy
                   :src="!$common.isEmpty($store.state.webInfo.backgroundImage)?$store.state.webInfo.backgroundImage:$constant.random_image+new Date()+Math.floor(Math.random()*10)"
                   fit="cover">
           <div slot="error" class="image-slot background-image-error"></div>
@@ -39,7 +40,7 @@
         <div class="page-container-wrap">
           <div class="page-container">
             <div class="aside-content" v-if="showAside">
-              <myAside></myAside>
+              <myAside @selectSort="selectSort" @selectArticle="selectArticle"></myAside>
             </div>
             <div class="recent-posts">
               <div class="announcement background-opacity">
@@ -97,7 +98,9 @@
           current: 1,
           size: 10,
           total: 0,
-          searchKey: ""
+          searchKey: "",
+          sortId: null,
+          articleSearch: ""
         },
         guShi: {
           "content": "",
@@ -120,13 +123,51 @@
     },
 
     methods: {
+      async selectSort(sort) {
+        this.pagination = {
+          current: 1,
+          size: 10,
+          total: 0,
+          searchKey: "",
+          sortId: sort.id,
+          articleSearch: ""
+        };
+        this.articles = [];
+        await this.getArticles();
+        this.$nextTick(() => {
+          document.querySelector('.recent-posts').scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+            inline: "nearest"
+          });
+        });
+      },
+      async selectArticle(articleSearch) {
+        this.pagination = {
+          current: 1,
+          size: 10,
+          total: 0,
+          searchKey: "",
+          sortId: null,
+          articleSearch: articleSearch
+        };
+        this.articles = [];
+        await this.getArticles();
+        this.$nextTick(() => {
+          document.querySelector('.recent-posts').scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+            inline: "nearest"
+          });
+        });
+      },
       pageArticles() {
         this.pagination.current = this.pagination.current + 1;
         this.getArticles();
       },
 
-      getArticles() {
-        this.$http.post(this.$constant.baseURL + "/article/listArticle", this.pagination)
+      async getArticles() {
+        await this.$http.post(this.$constant.baseURL + "/article/listArticle", this.pagination)
           .then((res) => {
             if (!this.$common.isEmpty(res.data)) {
               this.articles = this.articles.concat(res.data.records);

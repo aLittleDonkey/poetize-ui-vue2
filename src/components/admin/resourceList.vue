@@ -2,7 +2,8 @@
   <div>
     <div>
       <div class="handle-box">
-        <el-select v-model="pagination.resourceType" placeholder="资源类型" class="handle-select mrb10">
+        <el-select clearable v-model="pagination.resourceType" placeholder="资源类型" class="handle-select mrb10">
+          <el-option key="20" label="公共资源" value="assets"></el-option>
           <el-option key="10" label="表情包" value="internetMeme"></el-option>
           <el-option key="1" label="用户头像" value="userAvatar"></el-option>
           <el-option key="2" label="文章封面" value="articleCover"></el-option>
@@ -16,6 +17,12 @@
           <el-option key="11" label="聊天群头像" value="im/groupAvatar"></el-option>
           <el-option key="12" label="群聊天图片" value="im/groupMessage"></el-option>
           <el-option key="13" label="朋友聊天图片" value="im/friendMessage"></el-option>
+          <el-option key="14" label="音乐声音" value="funnyUrl"></el-option>
+          <el-option key="15" label="音乐封面" value="funnyCover"></el-option>
+          <el-option key="16" label="Love.Cover" value="love/bgCover"></el-option>
+          <el-option key="17" label="Love.Man" value="love/manCover"></el-option>
+          <el-option key="18" label="Love.Woman" value="love/womanCover"></el-option>
+          <el-option key="19" label="收藏夹封面" value="favoritesCover"></el-option>
         </el-select>
         <el-button type="primary" icon="el-icon-search" @click="search()">搜索</el-button>
         <el-button type="primary" @click="addResources()">新增资源</el-button>
@@ -35,11 +42,22 @@
         </el-table-column>
         <el-table-column label="路径" align="center">
           <template slot-scope="scope">
-            <el-image :preview-src-list="[scope.row.path]" class="table-td-thumb" :src="scope.row.path"
-                      fit="cover"></el-image>
+            <template v-if="!$common.isEmpty(scope.row.mimeType) && scope.row.mimeType.includes('image')">
+              <el-image lazy :preview-src-list="[scope.row.path]" class="table-td-thumb" :src="scope.row.path"
+                        fit="cover"></el-image>
+            </template>
+            <template v-else>
+              {{scope.row.path}}
+            </template>
           </template>
         </el-table-column>
 
+        <el-table-column label="大小(KB)" align="center">
+          <template slot-scope="scope">
+            {{Math.round(scope.row.size / 1024)}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="mimeType" label="类型" align="center"></el-table-column>
         <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
         <el-table-column label="操作" width="180" align="center">
           <template slot-scope="scope">

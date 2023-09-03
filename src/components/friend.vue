@@ -3,6 +3,7 @@
     <el-image style="animation: header-effect 2s"
               class="background-image"
               v-once
+              lazy
               :src="$constant.friendBG"
               fit="cover">
       <div slot="error" class="image-slot background-image-error"></div>
@@ -35,16 +36,16 @@
                     </div>
                     <div class="user-content">
                       <div>
-                        <el-input v-model="friend.title"></el-input>
+                        <el-input maxlength="30" v-model="friend.title"></el-input>
                       </div>
                       <div>
-                        <el-input v-model="friend.introduction"></el-input>
+                        <el-input maxlength="120" v-model="friend.introduction"></el-input>
                       </div>
                       <div>
-                        <el-input v-model="friend.cover"></el-input>
+                        <el-input maxlength="200" v-model="friend.cover"></el-input>
                       </div>
                       <div>
-                        <el-input v-model="friend.url"></el-input>
+                        <el-input maxlength="200" v-model="friend.url"></el-input>
                       </div>
                     </div>
                   </div>
@@ -137,18 +138,10 @@
           return;
         }
 
-        if (this.$common.isEmpty(this.$store.state.currentUser.email)) {
-          this.$message({
-            message: "请先绑定邮箱！",
-            type: "error"
-          });
-          return;
-        }
-
         if (this.friend.title.trim() === "") {
           this.$message({
             message: "你还没写名称呢~",
-            type: "warning",
+            type: "warning"
           });
           return;
         }
@@ -156,7 +149,7 @@
         if (this.friend.introduction.trim() === "") {
           this.$message({
             message: "你还没写简介呢~",
-            type: "warning",
+            type: "warning"
           });
           return;
         }
@@ -164,7 +157,7 @@
         if (this.friend.cover.trim() === "") {
           this.$message({
             message: "你还没设置封面呢~",
-            type: "warning",
+            type: "warning"
           });
           return;
         }
@@ -172,7 +165,7 @@
         if (this.friend.url.trim() === "") {
           this.$message({
             message: "你还没写网址呢~",
-            type: "warning",
+            type: "warning"
           });
           return;
         }

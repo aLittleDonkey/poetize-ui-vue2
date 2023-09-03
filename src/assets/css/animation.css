@@ -128,6 +128,28 @@
     }
 }
 
+/* 放大 */
+@keyframes imgScale {
+    0% {
+        transform: scale(0.8, 0.8);
+    }
+
+    70% {
+        transform: scale(1.3, 1.3);
+    }
+
+    100% {
+        transform: scale(0.8, 0.8);
+    }
+}
+
+/* 渐变 */
+@keyframes jianBian {
+    to {
+        background-position: -2000rem;
+    }
+}
+
 /* 背景位置移动 */
 @keyframes gradientBG {
     0% {
@@ -167,5 +189,23 @@
 
     50% {
         opacity: 1;
+    }
+}
+
+/* 由左开向右 */
+@keyframes passing {
+    0% {
+        transform: translateX(-150%);
+        opacity: 0
+    }
+
+    50% {
+        transform: translateX(0);
+        opacity: 1
+    }
+
+    100% {
+        transform: translateX(150%);
+        opacity: 0
     }
 }

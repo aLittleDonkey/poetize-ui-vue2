@@ -5,14 +5,16 @@
     <el-image class="my-el-image poem-image"
               style="position: absolute;margin-top: -50px"
               v-once
+              lazy
               :src="$constant.two_poem_image[Math.floor(Math.random() * $constant.two_poem_image.length)]"
               fit="cover">
       <div slot="error" class="image-slot"></div>
     </el-image>
     <div class="poem-wrap">
-      <div><span>{{isHitokoto?hitokoto.from:guShi.origin}}</span></div>
+      <div v-if="isShehui"><span>鬼畜全明星</span></div>
+      <div v-else><span>{{isHitokoto?hitokoto.from:guShi.origin}}</span></div>
       <p class="poem">{{isHitokoto?hitokoto.hitokoto:guShi.content}}</p>
-      <p class="info" v-if="!isHitokoto || (isHitokoto && !$common.isEmpty(hitokoto.from_who))">
+      <p class="info" v-if="!isShehui && (!isHitokoto || (isHitokoto && !$common.isEmpty(hitokoto.from_who)))">
         {{isHitokoto?hitokoto.from_who:guShi.author}}
       </p>
     </div>
@@ -24,6 +26,10 @@
       isHitokoto: {
         type: Boolean,
         default: true
+      },
+      isShehui: {
+        type: Boolean,
+        default: false
       }
     },
     data() {
@@ -42,14 +48,32 @@
       };
     },
     created() {
-      if (this.isHitokoto) {
-        this.getHitokoto();
+      if (!this.isShehui) {
+        if (this.isHitokoto) {
+          this.getHitokoto();
+        } else {
+          this.getGuShi();
+        }
       } else {
-        this.getGuShi();
+        this.hitokoto.from = "";
+        this.hitokoto.from_who = "";
+        this.sendShehui();
       }
     },
 
     methods: {
+      sendShehui() {
+        let that = this;
+        let xhr = new XMLHttpRequest();
+        xhr.open('get', this.$constant.shehui);
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4) {
+            let shehui = xhr.responseText;
+            that.hitokoto.hitokoto = shehui.substring(1, shehui.length - 1);
+          }
+        };
+        xhr.send();
+      },
       getGuShi() {
         let that = this;
         let xhr = new XMLHttpRequest();
@@ -88,18 +112,20 @@
     text-align: center;
     letter-spacing: 4px;
     font-weight: 300;
-    width: 60%;
+    width: 100%;
+    max-width: 800px;
   }
 
   .poem-wrap div span {
-    padding: 5px 40px;
+    padding: 5px 10px;
     color: var(--white);
-    font-size: 1.8em;
+    font-size: 2em;
     border-radius: 5px;
   }
 
   .poem-wrap p {
-    width: 70%;
+    width: 100%;
+    max-width: 800px;
     color: var(--white);
   }
 
@@ -109,7 +135,7 @@
   }
 
   .poem-wrap p.info {
-    margin: 20px auto;
+    margin: 20px auto 40px;
     font-size: 1.1em;
   }
 </style>

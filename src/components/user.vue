@@ -7,6 +7,7 @@
       <el-image class="my-el-image"
                 style="position: absolute"
                 v-once
+                lazy
                 :src="$constant.two_poem_image[Math.floor(Math.random() * $constant.two_poem_image.length)]"
                 fit="cover">
         <div slot="error" class="image-slot"></div>
@@ -15,8 +16,11 @@
         <div class="form-container sign-up-container">
           <div class="myCenter">
             <h1>注册</h1>
-            <input v-model="username" type="text" placeholder="用户名">
-            <input v-model="password" type="password" placeholder="密码">
+            <input v-model="username" type="text" maxlength="30" placeholder="用户名">
+            <input v-model="password" type="password" maxlength="30" placeholder="密码">
+            <input v-model="email" type="email" placeholder="邮箱">
+            <input v-model="code" type="text" placeholder="验证码" disabled>
+            <a style="margin: 0" href="#" @click="changeDialog('邮箱验证码')">获取验证码</a>
             <button @click="regist()">注册</button>
           </div>
         </div>
@@ -52,6 +56,7 @@
       <el-image class="my-el-image"
                 style="position: absolute"
                 v-once
+                lazy
                 :src="$constant.two_poem_image[Math.floor(Math.random() * $constant.two_poem_image.length)]"
                 fit="cover">
         <div slot="error" class="image-slot"></div>
@@ -72,7 +77,7 @@
             </div>
             <div class="user-content">
               <div>
-                <el-input v-model="currentUser.username"></el-input>
+                <el-input maxlength="30" v-model="currentUser.username"></el-input>
               </div>
               <div>
                 <div v-if="!$common.isEmpty(currentUser.phoneNumber)">
@@ -158,7 +163,7 @@
               <div style="margin-top: 10px;margin-bottom: 5px">验证码：</div>
               <el-input v-model="code"></el-input>
               <div style="margin-top: 10px;margin-bottom: 5px">新密码：</div>
-              <el-input v-model="password"></el-input>
+              <el-input maxlength="30" v-model="password"></el-input>
             </div>
             <div v-else-if="passwordFlag === 2">
               <div style="margin-bottom: 5px">邮箱：</div>
@@ -166,13 +171,21 @@
               <div style="margin-top: 10px;margin-bottom: 5px">验证码：</div>
               <el-input v-model="code"></el-input>
               <div style="margin-top: 10px;margin-bottom: 5px">新密码：</div>
-              <el-input v-model="password"></el-input>
+              <el-input maxlength="30" v-model="password"></el-input>
+            </div>
+          </div>
+          <div v-else-if="dialogTitle === '邮箱验证码'">
+            <div>
+              <div style="margin-bottom: 5px">邮箱：</div>
+              <el-input v-model="email"></el-input>
+              <div style="margin-top: 10px;margin-bottom: 5px">验证码：</div>
+              <el-input v-model="code"></el-input>
             </div>
           </div>
         </div>
         <div style="display: flex;margin-top: 30px" v-show="dialogTitle !== '修改头像'">
           <proButton :info="codeString"
-                     v-show="dialogTitle === '修改手机号' || dialogTitle === '绑定手机号' || dialogTitle === '修改邮箱' || dialogTitle === '绑定邮箱' || dialogTitle === '找回密码'"
+                     v-show="dialogTitle === '修改手机号' || dialogTitle === '绑定手机号' || dialogTitle === '修改邮箱' || dialogTitle === '绑定邮箱' || dialogTitle === '找回密码' || dialogTitle === '邮箱验证码'"
                      @click.native="getCode()"
                      :before="$constant.before_color_1"
                      :after="$constant.after_color_1"
@@ -270,6 +283,22 @@
           return;
         }
 
+        if (this.dialogTitle === "邮箱验证码" && this.$common.isEmpty(this.email)) {
+          this.$message({
+            message: "请输入邮箱！",
+            type: "error"
+          });
+          return false;
+        }
+
+        if (this.$common.isEmpty(this.code)) {
+          this.$message({
+            message: "请输入验证码！",
+            type: "error"
+          });
+          return;
+        }
+
         if (this.username.indexOf(" ") !== -1 || this.password.indexOf(" ") !== -1) {
           this.$message({
             message: "用户名或密码不能包含空格！",
@@ -280,8 +309,13 @@
 
         let user = {
           username: this.username.trim(),
+          code: this.code.trim(),
           password: this.$common.encrypt(this.password.trim())
         };
+
+        if (this.dialogTitle === "邮箱验证码") {
+          user.email = this.email;
+        }
 
         this.$http.post(this.$constant.baseURL + "/user/regist", user)
           .then((res) => {
@@ -365,7 +399,7 @@
           }
           params.place = this.phoneNumber;
           return true;
-        } else if (this.dialogTitle === "修改邮箱" || this.dialogTitle === "绑定邮箱" || (this.dialogTitle === "找回密码" && this.passwordFlag === 2)) {
+        } else if (this.dialogTitle === "修改邮箱" || this.dialogTitle === "绑定邮箱" || this.dialogTitle === "邮箱验证码" || (this.dialogTitle === "找回密码" && this.passwordFlag === 2)) {
           params.flag = 2;
           if (this.$common.isEmpty(this.email)) {
             this.$message({
@@ -405,15 +439,23 @@
         return true;
       },
       changeDialog(value) {
-        if (value === "修改头像") {
-          if (this.$common.isEmpty(this.currentUser.email)) {
+        if (value === "邮箱验证码") {
+          if (this.$common.isEmpty(this.email)) {
             this.$message({
-              message: "请先绑定邮箱！",
+              message: "请输入邮箱！",
               type: "error"
             });
-            return;
+            return false;
+          }
+          if (!(/^\w+@[a-zA-Z0-9]{2,10}(?:\.[a-z]{2,4}){1,3}$/.test(this.email))) {
+            this.$message({
+              message: "邮箱格式有误！",
+              type: "error"
+            });
+            return false;
           }
         }
+
         this.dialogTitle = value;
         this.showDialog = true;
       },
@@ -459,6 +501,8 @@
           } else {
             this.updateSecretInfo();
           }
+        } else if (this.dialogTitle === "邮箱验证码") {
+          this.showDialog = false;
         }
       },
       updateSecretInfo() {
@@ -529,7 +573,7 @@
           }
 
           let url;
-          if (this.dialogTitle === "找回密码") {
+          if (this.dialogTitle === "找回密码" || this.dialogTitle === "邮箱验证码") {
             url = "/user/getCodeForForgetPassword";
           } else {
             url = "/user/getCodeForBind";
@@ -594,6 +638,7 @@
     width: 750px;
     max-width: 100%;
     min-height: 450px;
+    margin: 10px;
   }
 
   .in-up p {
@@ -629,7 +674,7 @@
   .form-container div {
     background: var(--white);
     flex-direction: column;
-    padding: 0 50px;
+    padding: 0 20px;
     height: 100%;
   }
 
