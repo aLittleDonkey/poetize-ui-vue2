@@ -24,7 +24,7 @@
     </div>
 
     <!-- 搜索 -->
-    <div style="padding: 15px;border-radius: 10px;margin-top: 40px;animation: hideToShow 1s ease-in-out"
+    <div style="padding: 15px;border-radius: 10px;margin-top: 30px;animation: hideToShow 1s ease-in-out"
          class="shadow-box background-opacity wow">
       <div style="color: var(--lightGreen);font-size: 20px;font-weight: bold;margin-bottom: 10px">
         搜索
@@ -48,7 +48,7 @@
 
     <!-- 推荐文章 -->
     <div v-if="!$common.isEmpty(recommendArticles)"
-         style="padding: 25px;border-radius: 10px;margin-top: 40px;animation: hideToShow 1s ease-in-out"
+         style="padding: 25px;border-radius: 10px;margin-top: 30px;animation: hideToShow 1s ease-in-out"
          class="shadow-box background-opacity wow">
       <div class="card-content2-title">
         <i class="el-icon-reading card-content2-icon"></i>
@@ -77,6 +77,39 @@
       </div>
     </div>
 
+    <!-- 速览 -->
+    <div v-for="(sort, index) in sortInfo"
+         @click="selectSort(sort)"
+         :key="index"
+         :style="{background: $constant.sortColor[index % $constant.sortColor.length]}"
+         class="shadow-box-mini background-opacity wow"
+         style="position: relative;padding: 10px 25px 15px;border-radius: 10px;animation: hideToShow 1s ease-in-out;margin-top: 30px;cursor: pointer;color: var(--white)">
+      <div>速览</div>
+      <div class="sort-name">
+        {{sort.sortName}}
+      </div>
+      <div style="font-weight: bold;margin-top: 15px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden">
+        {{sort.sortDescription}}
+      </div>
+    </div>
+
+    <!-- 分类 -->
+    <div class="shadow-box background-opacity wow"
+         style="margin-top: 30px;padding: 25px 25px 5px;border-radius: 10px;animation: hideToShow 1s ease-in-out">
+      <div class="card-content2-title">
+        <i class="el-icon-folder-opened card-content2-icon"></i>
+        <span>分类</span>
+      </div>
+      <div v-for="(sort, index) in sortInfo"
+           :key="index"
+           class="post-sort"
+           @click="$router.push({path: '/sort', query: {sortId: sort.id}})">
+        <div>
+          <span v-for="(s, i) in sort.sortName.split('')" :key="i">{{ s }}</span>
+        </div>
+      </div>
+    </div>
+
     <!-- 赞赏 -->
     <div class="shadow-box-mini background-opacity wow admire-box"
          v-if="!$common.isEmpty(admires)">
@@ -100,39 +133,6 @@
       </div>
       <div class="admire-btn" @click="showAdmire()">
         赞赏
-      </div>
-    </div>
-
-    <!-- 速览 -->
-    <div v-for="(sort, index) in sortInfo"
-         @click="selectSort(sort)"
-         :key="index"
-         :style="{background: $constant.sortColor[index % $constant.sortColor.length]}"
-         class="shadow-box-mini background-opacity wow"
-         style="position: relative;padding: 20px 25px 40px;border-radius: 10px;animation: hideToShow 1s ease-in-out;margin-top: 40px;cursor: pointer;color: var(--white)">
-      <div>速览</div>
-      <div class="sort-name">
-        {{sort.sortName}}
-      </div>
-      <div style="font-weight: bold;margin-top: 15px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden">
-        {{sort.sortDescription}}
-      </div>
-    </div>
-
-    <!-- 分类 -->
-    <div class="shadow-box background-opacity wow"
-         style="margin-top: 40px;padding: 25px 25px 5px;border-radius: 10px;animation: hideToShow 1s ease-in-out">
-      <div class="card-content2-title">
-        <i class="el-icon-folder-opened card-content2-icon"></i>
-        <span>分类</span>
-      </div>
-      <div v-for="(sort, index) in sortInfo"
-           :key="index"
-           class="post-sort"
-           @click="$router.push({path: '/sort', query: {sortId: sort.id}})">
-        <div>
-          <span v-for="(s, i) in sort.sortName.split('')" :key="i">{{ s }}</span>
-        </div>
       </div>
     </div>
 
@@ -380,14 +380,14 @@
   .sort-name {
     font-weight: bold;
     font-size: 25px;
-    margin-top: 30px;
+    margin-top: 15px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
   }
 
   .sort-name:after {
-    top: 98px;
+    top: 74px;
     width: 22px;
     left: 26px;
     height: 2px;
@@ -402,7 +402,7 @@
     padding: 25px;
     border-radius: 10px;
     animation: hideToShow 1s ease-in-out;
-    margin-top: 40px;
+    margin-top: 30px;
   }
 
   .admire-btn {

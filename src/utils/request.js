@@ -90,11 +90,13 @@ export default {
     let config;
     if (isAdmin) {
       config = {
-        headers: {"Authorization": localStorage.getItem("adminToken"), "Content-Type": "multipart/form-data"}
+        headers: {"Authorization": localStorage.getItem("adminToken"), "Content-Type": "multipart/form-data"},
+        timeout: 60000
       };
     } else {
       config = {
-        headers: {"Authorization": localStorage.getItem("userToken"), "Content-Type": "multipart/form-data"}
+        headers: {"Authorization": localStorage.getItem("userToken"), "Content-Type": "multipart/form-data"},
+        timeout: 60000
       };
     }
     return new Promise((resolve, reject) => {

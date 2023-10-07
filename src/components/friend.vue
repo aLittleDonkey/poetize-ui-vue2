@@ -67,10 +67,34 @@
           <img class="after-img" :src="$constant.friendLetterBottom" style="width: 100%"/>
         </div>
 
+        <div style="font-size: 20px;font-weight: bold;margin-top: 40px">🌸本站信息</div>
+        <div>
+          <blockquote>
+            <div>网站名称: $$$$POETIZE</div>
+            <div>网址: $$$$https://poetize.cn</div>
+            <div>头像: $$$$https://s1.ax1x.com/2022/11/10/z9E7X4.jpg</div>
+            <div>描述: $$$$这是一个 Vue2 Vue3 与 SpringBoot 结合的产物～</div>
+            <div>网站封面: $$$$https://s1.ax1x.com/2022/11/10/z9VlHs.png</div>
+          </blockquote>
+        </div>
+        <div style="font-size: 20px;font-weight: bold">🌸申请方式</div>
+        <div>
+          <blockquote>
+            <div>点击上方信封✨✨✨</div>
+            <div>不会添加带有广告营销和没有实质性内容的友链🚫🚫🚫</div>
+            <div>申请之前请将本网站添加为您的友链哦🎟️🎟️🎟️</div>
+          </blockquote>
+        </div>
+
         <hr>
 
-        <h2>🥇友情链接</h2>
-        <card :resourcePathList="friendList" @clickResourcePath="clickFriend"></card>
+        <h2 style="margin-top: 60px">♥️青出于蓝</h2>
+        <card :resourcePathList="friendList['♥️青出于蓝']" @clickResourcePath="clickFriend"></card>
+
+        <hr>
+
+        <h2 style="margin-top: 60px">🥇友情链接</h2>
+        <card :resourcePathList="friendList['🥇友情链接']" @clickResourcePath="clickFriend"></card>
       </div>
     </div>
 
@@ -93,13 +117,7 @@
 
     data() {
       return {
-        pagination: {
-          current: 1,
-          size: 9999,
-          desc: false,
-          resourceType: "friendUrl"
-        },
-        friendList: [],
+        friendList: {},
         friend: {
           title: "",
           introduction: "",
@@ -189,10 +207,10 @@
         window.open(path);
       },
       getFriends() {
-        this.$http.post(this.$constant.baseURL + "/webInfo/listResourcePath", this.pagination)
+        this.$http.get(this.$constant.baseURL + "/webInfo/listFriend")
           .then((res) => {
             if (!this.$common.isEmpty(res.data)) {
-              this.friendList = res.data.records;
+              this.friendList = res.data;
             }
           })
           .catch((error) => {
@@ -340,6 +358,16 @@
     background-color: #eee;
     border: #ddd 1px solid;
     padding: 20px 0;
+  }
+
+  blockquote {
+    line-height: 2;
+    border-left: 0.2rem solid #ed6ea0;
+    padding: 10px 1rem;
+    background-color: #ffe6fa;
+    border-radius: 4px;
+    margin: 20px auto;
+    color: var(--maxGreyFont);
   }
 
   @media screen and (max-width: 700px) {

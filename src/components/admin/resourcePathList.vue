@@ -99,7 +99,7 @@
           <div style="margin-bottom: 5px">标题：</div>
           <el-input maxlength="60" v-model="resourcePath.title"></el-input>
           <div style="margin-top: 10px;margin-bottom: 5px">分类：</div>
-          <el-input :disabled="!['lovePhoto', 'funny', 'favorites'].includes(resourcePath.type)"
+          <el-input :disabled="!['friendUrl', 'lovePhoto', 'funny', 'favorites'].includes(resourcePath.type)"
                     maxlength="30" v-model="resourcePath.classify"></el-input>
           <div style="margin-top: 10px;margin-bottom: 5px">简介：</div>
           <el-input :disabled="!['friendUrl', 'favorites'].includes(resourcePath.type)"

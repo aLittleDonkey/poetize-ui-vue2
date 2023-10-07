@@ -371,7 +371,7 @@
           });
         } else {
           let userToken = this.$common.encrypt(localStorage.getItem("userToken"));
-          window.open(this.$constant.imBaseURL + "?userToken=" + userToken);
+          window.open(this.$constant.imBaseURL + "?userToken=" + userToken + "&defaultStoreType=" + localStorage.getItem("defaultStoreType"));
         }
       },
       logout() {
@@ -393,6 +393,7 @@
           .then((res) => {
             if (!this.$common.isEmpty(res.data)) {
               this.$store.commit("loadWebInfo", res.data);
+              localStorage.setItem("defaultStoreType", res.data.defaultStoreType);
             }
           })
           .catch((error) => {

@@ -58,6 +58,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="mimeType" label="类型" align="center"></el-table-column>
+        <el-table-column prop="storeType" label="存储平台" align="center"></el-table-column>
         <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
         <el-table-column label="操作" width="180" align="center">
           <template slot-scope="scope">
@@ -85,7 +86,19 @@
                destroy-on-close
                center>
       <div>
+        <div style="display: flex;margin-bottom: 10px">
+          <div style="line-height: 40px">存储平台：</div>
+          <el-select v-model="storeType" placeholder="存储平台" style="width: 120px">
+            <el-option
+              v-for="(item, i) in storeTypes"
+              :key="i"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
         <uploadPicture :isAdmin="true" :prefix="pagination.resourceType" @addPicture="addPicture" :maxSize="5"
+                       :storeType="storeType"
                        :maxNumber="10"></uploadPicture>
       </div>
     </el-dialog>
@@ -109,7 +122,12 @@
           resourceType: ""
         },
         resources: [],
-        resourceDialog: false
+        resourceDialog: false,
+        storeTypes: [
+          {label: "服务器", value: "local"},
+          {label: "七牛云", value: "qiniu"}
+        ],
+        storeType: localStorage.getItem("defaultStoreType")
       }
     },
 

@@ -53,6 +53,10 @@
         <el-input maxlength="30" v-model="article.password"></el-input>
       </el-form-item>
 
+      <el-form-item v-if="article.viewStatus === false" label="密码提示" prop="tips">
+        <el-input maxlength="60" v-model="article.tips"></el-input>
+      </el-form-item>
+
       <el-form-item label="封面" prop="articleCover">
         <div style="display: flex">
           <el-input v-model="article.articleCover"></el-input>
@@ -112,6 +116,7 @@
           recommendStatus: false,
           viewStatus: true,
           password: "",
+          tips: "",
           articleCover: "",
           sortId: null,
           labelId: null
@@ -176,11 +181,39 @@
           suffix = file.name.substring(file.name.lastIndexOf('.'));
         }
         let key = "articlePicture" + "/" + this.$store.state.currentAdmin.username.replace(/[^a-zA-Z]/g, '') + this.$store.state.currentAdmin.id + new Date().getTime() + Math.floor(Math.random() * 1000) + suffix;
+
+        let storeType = localStorage.getItem("defaultStoreType");
+
         let fd = new FormData();
         fd.append("file", file);
         fd.append("key", key);
+        fd.append("relativePath", key);
+        fd.append("type", "articlePicture");
+        fd.append("storeType", storeType);
 
-        this.$http.get(this.$constant.baseURL + "/qiniu/getUpToken", {key: key}, true)
+        if (storeType === "local") {
+          this.saveLocal(pos, fd);
+        } else if (storeType === "qiniu") {
+          this.saveQiniu(pos, fd);
+        }
+      },
+      saveLocal(pos, fd) {
+        this.$http.upload(this.$constant.baseURL + "/resource/upload", fd, true)
+          .then((res) => {
+            if (!this.$common.isEmpty(res.data)) {
+              let url = res.data;
+              this.$refs.md.$img2Url(pos, url);
+            }
+          })
+          .catch((error) => {
+            this.$message({
+              message: error.message,
+              type: "error"
+            });
+          });
+      },
+      saveQiniu(pos, fd) {
+        this.$http.get(this.$constant.baseURL + "/qiniu/getUpToken", {key: fd.get("key")}, true)
           .then((res) => {
             if (!this.$common.isEmpty(res.data)) {
               fd.append("token", res.data);
@@ -189,7 +222,8 @@
                 .then((res) => {
                   if (!this.$common.isEmpty(res.key)) {
                     let url = this.$constant.qiniuDownload + res.key;
-                    this.$common.saveResource(this, "articlePicture", url, file.size, file.type, true);
+                    let file = fd.get("file");
+                    this.$common.saveResource(this, "articlePicture", url, file.size, file.type, "qiniu", true);
                     this.$refs.md.$img2Url(pos, url);
                   }
                 })
