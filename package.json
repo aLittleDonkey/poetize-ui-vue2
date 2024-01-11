@@ -13,12 +13,14 @@
     "crypto-js": "^4.1.1",
     "element-ui": "^2.4.5",
     "markdown-it": "^12.2.0",
+    "markdown-it-multimd-table": "^4.2.3",
     "mavon-editor": "^2.9.1",
     "qs": "^6.10.3",
     "vue": "^2.6.11",
     "vue-baberrage": "^3.2.4",
     "vue-router": "^3.2.0",
     "vue-seamless-scroll": "^1.1.23",
+    "vue-video-player": "^5.0.2",
     "vuex": "^3.4.0"
   },
   "devDependencies": {

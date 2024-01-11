@@ -288,7 +288,7 @@
             if (!this.$common.isEmpty(res.data)) {
               this.clearContext();
               let url = res.data;
-              let img = "<你画我猜," + url + ">";
+              let img = "[你画我猜," + url + "]";
               this.$emit("addGraffitiComment", img);
             }
           })
@@ -311,8 +311,8 @@
                     this.clearContext();
                     let url = this.$constant.qiniuDownload + res.key;
                     let file = fd.get("file");
-                    this.$common.saveResource(this, "graffiti", url, file.size, file.type, "qiniu");
-                    let img = "<你画我猜," + url + ">";
+                    this.$common.saveResource(this, "graffiti", url, file.size, file.type, null, "qiniu");
+                    let img = "[你画我猜," + url + "]";
                     this.$emit("addGraffitiComment", img);
                   }
                 })

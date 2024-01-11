@@ -86,7 +86,7 @@ export default {
     });
   },
 
-  upload(url, param, isAdmin = false) {
+  upload(url, param, isAdmin = false, option) {
     let config;
     if (isAdmin) {
       config = {
@@ -99,6 +99,15 @@ export default {
         timeout: 60000
       };
     }
+    if (typeof option !== "undefined") {
+      config.onUploadProgress = progressEvent => {
+        if (progressEvent.total > 0) {
+          progressEvent.percent = progressEvent.loaded / progressEvent.total * 100;
+        }
+        option.onProgress(progressEvent);
+      };
+    }
+
     return new Promise((resolve, reject) => {
       axios
         .post(url, param, config)

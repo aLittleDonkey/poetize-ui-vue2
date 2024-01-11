@@ -30,13 +30,20 @@
               </div>
             </li>
 
-<!--            <li v-for="(menu, index) in $store.getters.navigationBar"-->
-<!--                @click="$router.push({path: '/sort', query: {sortId: menu.id, labelId: menu.labels[0].id}})"-->
-<!--                :key="index">-->
-<!--              <div class="my-menu">-->
-<!--                📒 <span>{{ menu.sortName }}</span>-->
-<!--              </div>-->
-<!--            </li>-->
+            <el-dropdown :hide-timeout="500" placement="bottom">
+              <li>
+                <div class="my-menu">
+                  📒 <span>记录</span>
+                </div>
+              </li>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item v-for="(sort, index) in sortInfo" :key="index">
+                  <div @click="$router.push({path: '/sort', query: {sortId: sort.id}})">
+                    {{sort.sortName}}
+                  </div>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
 
             <!-- 爱情买卖 -->
             <li @click="$router.push({path: '/love'})">
@@ -63,12 +70,6 @@
             <li @click="goIm()">
               <div class="my-menu">
                 💬 <span>非礼勿言</span>
-              </div>
-            </li>
-            <!-- 音乐 -->
-            <li @click="$router.push({path: '/funny'})">
-              <div class="my-menu">
-                🎺 <span>曲乐</span>
               </div>
             </li>
             <!-- 留言 -->
@@ -123,10 +124,10 @@
     </div>
 
     <!-- 回到顶部按钮 -->
-    <div href="#" class="cd-top" v-if="!$common.mobile()" @click="toTop()"></div>
+<!--    <div href="#" class="cd-top" v-if="!$common.mobile()" @click="toTop()"></div>-->
 
     <div class="toolButton">
-      <div class="backTop" v-if="$common.mobile() && toolButton" @click="toTop()">
+      <div class="backTop" v-if="toolButton" @click="toTop()">
         <!-- 回到顶部按钮 -->
         <svg viewBox="0 0 1024 1024" width="50" height="50">
           <path
@@ -142,7 +143,7 @@
                   :close-delay="500"
                   trigger="hover">
         <div slot="reference">
-          <i class="fa fa-cog iconRotate" aria-hidden="true"></i>
+          <i class="fa fa-cog iconRotate" style="color: var(--black)" aria-hidden="true"></i>
         </div>
         <div class="my-setting">
           <div>
@@ -163,6 +164,13 @@
             style="position:fixed;left:0;top:0;pointer-events:none;z-index: 1000">
     </canvas>
 
+    <!-- 图片预览 -->
+    <div id="outerImg">
+      <div id="innerImg" style="position:absolute">
+        <img id="bigImg" src=""/>
+      </div>
+    </div>
+
     <el-drawer :visible.sync="toolbarDrawer"
                :show-close="false"
                size="65%"
@@ -177,13 +185,19 @@
             </div>
           </li>
 
-<!--          <li v-for="(menu, index) in $store.getters.navigationBar"-->
-<!--              @click="smallMenu({path: '/sort', query: {sortId: menu.id, labelId: menu.labels[0].id}})"-->
-<!--              :key="index">-->
-<!--            <div>-->
-<!--              📒 <span>{{ menu.sortName }}</span>-->
-<!--            </div>-->
-<!--          </li>-->
+          <li>
+            <div>
+              📒 <span>记录</span>
+            </div>
+            <div>
+              <div v-for="(menu, index) in sortInfo"
+                   :key="index"
+                   class="sortMenu"
+                   @click="smallMenu({path: '/sort', query: {sortId: menu.id}})">
+                {{menu.sortName}}
+              </div>
+            </div>
+          </li>
 
           <!-- 爱情买卖 -->
           <li @click="smallMenu({path: '/love'})">
@@ -210,12 +224,6 @@
           <li @click="goIm()">
             <div>
               💬 <span>非礼勿言</span>
-            </div>
-          </li>
-          <!-- 音乐 -->
-          <li @click="smallMenu({path: '/funny'})">
-            <div>
-              🎺 <span>曲乐</span>
             </div>
           </li>
           <!-- 留言 -->
@@ -268,6 +276,7 @@
 
 <script>
   import mousedown from '../utils/mousedown';
+  import constant from "../utils/constant";
 
   export default {
     data() {
@@ -350,6 +359,9 @@
     computed: {
       toolbar() {
         return this.$store.state.toolbar;
+      },
+      sortInfo() {
+        return this.$store.state.sortInfo;
       }
     },
     methods: {
@@ -513,7 +525,7 @@
     padding: 0;
   }
 
-  .scroll-menu > li {
+  .scroll-menu li {
     list-style: none;
     margin: 0 12px;
     font-size: 17px;
@@ -523,16 +535,16 @@
     cursor: pointer;
   }
 
-  .scroll-menu > li:hover .my-menu span {
+  .scroll-menu li:hover .my-menu span {
     color: var(--themeBackground);
   }
 
-  .scroll-menu > li:hover .my-menu i {
+  .scroll-menu li:hover .my-menu i {
     color: var(--themeBackground);
     animation: scale 1.5s ease-in-out infinite;
   }
 
-  .scroll-menu > li .my-menu:after {
+  .scroll-menu li .my-menu:after {
     content: "";
     display: block;
     position: absolute;
@@ -544,8 +556,25 @@
     transition: max-width 0.25s ease-in-out;
   }
 
-  .scroll-menu > li:hover .my-menu:after {
+  .scroll-menu li:hover .my-menu:after {
     max-width: 100%;
+  }
+
+  .sortMenu {
+    margin-left: 44px;
+    font-size: 17px;
+    position: relative;
+  }
+
+  .sortMenu:after {
+    top: 32px;
+    width: 35px;
+    left: 0;
+    height: 2px;
+    background: var(--themeBackground);
+    content: "";
+    border-radius: 1px;
+    position: absolute;
   }
 
   .el-dropdown {
@@ -578,6 +607,7 @@
     z-index: 100;
     cursor: pointer;
     font-size: 25px;
+    width: 30px;
   }
 
   .my-setting {
@@ -618,6 +648,17 @@
 
   .backTop:hover {
     top: -10px;
+  }
+
+  #outerImg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    display: none;
   }
 
   @media screen and (max-width: 400px) {

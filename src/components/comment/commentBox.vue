@@ -40,10 +40,11 @@
                :visible.sync="showPicture"
                width="25%"
                :append-to-body="true"
+               :close-on-click-modal="false"
                destroy-on-close
                center>
       <div>
-        <uploadPicture :prefix="'commentPicture'" @addPicture="addPicture" :maxSize="5"
+        <uploadPicture :prefix="'commentPicture'" @addPicture="addPicture" :maxSize="2"
                        :maxNumber="1"></uploadPicture>
       </div>
     </el-dialog>
@@ -96,7 +97,7 @@
         this.savePicture();
       },
       savePicture() {
-        let img = "<" + this.picture.name + "," + this.picture.url + ">";
+        let img = "[" + this.picture.name + "," + this.picture.url + "]";
         this.commentContent += img;
         this.picture.url = "";
         this.showPicture = false;

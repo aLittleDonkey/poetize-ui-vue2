@@ -8,7 +8,7 @@
                 style="position: absolute"
                 v-once
                 lazy
-                :src="$constant.two_poem_image[Math.floor(Math.random() * $constant.two_poem_image.length)]"
+                :src="$constant.random_image+new Date()+Math.floor(Math.random()*10)"
                 fit="cover">
         <div slot="error" class="image-slot"></div>
       </el-image>
@@ -57,7 +57,7 @@
                 style="position: absolute"
                 v-once
                 lazy
-                :src="$constant.two_poem_image[Math.floor(Math.random() * $constant.two_poem_image.length)]"
+                :src="$constant.random_image+new Date()+Math.floor(Math.random()*10)"
                 fit="cover">
         <div slot="error" class="image-slot"></div>
       </el-image>

@@ -31,14 +31,28 @@
                 </div>
               </div>
             </div>
+
+            <!-- 曲乐 -->
+            <div @click="changeFavorite(2)"
+                 class="card-item">
+              <div class="favorite-image"></div>
+              <div style="position: absolute;left: 0;top: 0;padding: 20px 25px 15px">
+                <div class="card-name">
+                  曲乐
+                </div>
+                <div class="card-desc">
+                  一曲肝肠断，天涯何处觅知音
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- 内容 -->
-      <div class="favorite-content my-animation-slide-bottom">
+      <div class="favorite-content">
         <!-- 收藏夹 -->
-        <div v-show="card === 1 && !$common.isEmpty(collects)">
+        <div v-show="card === 1 && !$common.isEmpty(collects)" class="my-animation-slide-bottom">
           <div v-for="(value, key) in collects" :key="key" style="margin-top: 20px">
             <div class="collect-classify">
               {{key}}
@@ -62,6 +76,11 @@
             </div>
           </div>
         </div>
+
+        <!-- 曲乐 -->
+        <div v-show="card === 2" class="my-animation-slide-bottom">
+          <funny></funny>
+        </div>
       </div>
     </div>
 
@@ -75,10 +94,12 @@
 <script>
 
   const myFooter = () => import( "./common/myFooter");
+  const funny = () => import( "./funny");
 
   export default {
     components: {
-      myFooter
+      myFooter,
+      funny
     },
 
     data() {
@@ -281,7 +302,7 @@
     -webkit-box-orient: vertical;
   }
 
-  @media screen and (max-width: 620px) {
+  @media screen and (max-width: 640px) {
     .card-container {
       margin-top: 0;
     }

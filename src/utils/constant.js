@@ -12,13 +12,19 @@ export default {
   waifuPath: "/webInfo/getWaifuJson",
   hitokoto: "https://v1.hitokoto.cn",
   shehui: "https://api.oick.cn/yulu/api.php",
-  tocbot: "https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.min.js",
+  tocbot: "https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js",
   jinrishici: "https://v1.jinrishici.com/all.json",
   random_image: "https://s1.ax1x.com/2022/12/04/zsKgDs.jpg?",
   //前后端定义的密钥，AES使用16位
   cryptojs_key: "aoligeimeimaobin",
   qiniuUrl: "https://upload.qiniup.com",
   qiniuDownload: "$$$$七牛云下载地址，仿照【https://file.poetize.cn/】",
+
+  friendWebName: "POETIZE",
+  friendUrl: "https://poetize.cn",
+  friendAvatar: "https://s1.ax1x.com/2022/11/10/z9E7X4.jpg",
+  friendIntroduction: "这是一个 Vue2 Vue3 与 SpringBoot 结合的产物～",
+  friendCover: "https://s1.ax1x.com/2022/11/10/z9VlHs.png",
 
   favoriteVideo: "$$$$自己找一个视频链接作为百宝箱的封面",
 
@@ -38,9 +44,6 @@ export default {
   before_color_list: ["#ff4b2b", "#EF794F", "#67C23A", "orange", "rgb(131, 123, 199)", "#23d5ab"],
 
   tree_hole_color: ["#ee7752", "#e73c7e", "#23a6d5", "#23d5ab", "rgb(131, 123, 199)", "#23d5ab"],
-
-  two_poem_image: ["https://s1.ax1x.com/2022/12/04/zsKgDs.jpg",
-    "https://s1.ax1x.com/2022/12/04/zsKh5V.jpg"],
 
   before_color_1: "black",
   after_color_1: "linear-gradient(45deg, #f43f3b, #ec008c)",

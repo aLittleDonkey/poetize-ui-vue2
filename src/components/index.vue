@@ -51,13 +51,47 @@
                   </div>
                 </div>
               </div>
-              <articleList :articleList="articles"></articleList>
-              <div class="pagination-wrap">
-                <div @click="pageArticles()" class="pagination" v-if="pagination.total !== articles.length">
-                  下一页
+
+              <div v-show="indexType === 1">
+                <div v-for="(sort, index) in sortInfo" :key="index">
+                  <div v-if="!$common.isEmpty(sortArticles[sort.id])">
+                    <div class="sort-article-first">
+                      <div>
+                        <svg viewBox="0 0 1024 1024" width="20" height="20"
+                             style="vertical-align: -2px;margin-bottom: -2px">
+                          <path
+                            d="M367.36 482.304H195.9936c-63.3344 0-114.6368-51.3536-114.6368-114.6368V196.2496c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368V367.616c0 63.3344-51.3536 114.688-114.688 114.688zM367.36 938.752H195.9936c-63.3344 0-114.6368-51.3536-114.6368-114.6368v-171.4176c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368v171.4176c0 63.3344-51.3536 114.6368-114.688 114.6368zM828.672 938.752h-171.4176c-63.3344 0-114.6368-51.3536-114.6368-114.6368v-171.4176c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368v171.4176c0 63.3344-51.3024 114.6368-114.6368 114.6368zM828.672 482.304h-171.4176c-63.3344 0-114.6368-51.3536-114.6368-114.6368V196.2496c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368V367.616c0 63.3344-51.3024 114.688-114.6368 114.688z"
+                            fill="#FF623E"></path>
+                        </svg>
+                        {{sort.sortName}}
+                      </div>
+                      <div class="article-more" @click="$router.push({path: '/sort', query: {sortId: sort.id}})">
+                        <svg viewBox="0 0 1024 1024" width="20" height="20"
+                             style="vertical-align: -2px;margin-bottom: -2px">
+                          <path
+                            d="M347.3 897.3H142.2c-30.8 0-51.4-31.7-38.9-59.9l136.1-306.1c4.9-11 4.9-23.6 0-34.6L103.3 190.6c-12.5-28.2 8.1-59.9 38.9-59.9h205.1c16.8 0 32.1 9.9 38.9 25.3l151.4 340.7c4.9 11 4.9 23.6 0 34.6L386.3 872.1c-6.9 15.3-22.1 25.2-39 25.2z"
+                            fill="#009F72"></path>
+                          <path
+                            d="M730.4 897.3H525.3c-30.8 0-51.4-31.7-38.9-59.9l136.1-306.1c4.9-11 4.9-23.6 0-34.6L486.4 190.6c-12.5-28.2 8.1-59.9 38.9-59.9h205.1c16.8 0 32.1 9.9 38.9 25.3l151.4 340.7c4.9 11 4.9 23.6 0 34.6L769.3 872.1c-6.8 15.3-22.1 25.2-38.9 25.2z"
+                            fill="#F9DB88"></path>
+                        </svg>
+                        MORE
+                      </div>
+                    </div>
+                    <sortArticle :articleList="sortArticles[sort.id]"></sortArticle>
+                  </div>
                 </div>
-                <div v-else style="user-select: none">
-                  ~~到底啦~~
+              </div>
+
+              <div v-show="indexType === 2">
+                <articleList :articleList="articles"></articleList>
+                <div class="pagination-wrap">
+                  <div @click="pageArticles()" class="pagination" v-if="pagination.total !== articles.length">
+                    下一页
+                  </div>
+                  <div v-else style="user-select: none">
+                    ~~到底啦~~
+                  </div>
                 </div>
               </div>
             </div>
@@ -76,6 +110,7 @@
   const zombie = () => import( "./common/zombie");
   const printer = () => import( "./common/printer");
   const articleList = () => import( "./articleList");
+  const sortArticle = () => import( "./common/sortArticle");
   const myFooter = () => import( "./common/myFooter");
   const myAside = () => import( "./myAside");
 
@@ -85,6 +120,7 @@
       zombie,
       printer,
       articleList,
+      sortArticle,
       myFooter,
       myAside
     },
@@ -93,6 +129,7 @@
       return {
         loading: false,
         showAside: true,
+        indexType: 1,
         printerInfo: "你看对面的青山多漂亮",
         pagination: {
           current: 1,
@@ -108,7 +145,8 @@
           "author": "",
           "category": ""
         },
-        articles: []
+        articles: [],
+        sortArticles: {}
       };
     },
 
@@ -116,7 +154,13 @@
 
     created() {
       this.getGuShi();
-      this.getArticles();
+      this.getSortArticles();
+    },
+
+    computed: {
+      sortInfo() {
+        return this.$store.state.sortInfo;
+      }
     },
 
     mounted() {
@@ -135,6 +179,8 @@
         this.articles = [];
         await this.getArticles();
         this.$nextTick(() => {
+          this.indexType = 2;
+          $(".announcement").css("max-width", "780px");
           document.querySelector('.recent-posts').scrollIntoView({
             behavior: "smooth",
             block: "start",
@@ -154,6 +200,8 @@
         this.articles = [];
         await this.getArticles();
         this.$nextTick(() => {
+          this.indexType = 2;
+          $(".announcement").css("max-width", "780px");
           document.querySelector('.recent-posts').scrollIntoView({
             behavior: "smooth",
             block: "start",
@@ -172,6 +220,20 @@
             if (!this.$common.isEmpty(res.data)) {
               this.articles = this.articles.concat(res.data.records);
               this.pagination.total = res.data.total;
+            }
+          })
+          .catch((error) => {
+            this.$message({
+              message: error.message,
+              type: "error"
+            });
+          });
+      },
+      getSortArticles() {
+        this.$http.get(this.$constant.baseURL + "/article/listSortArticle")
+          .then((res) => {
+            if (!this.$common.isEmpty(res.data)) {
+              this.sortArticles = res.data;
             }
           })
           .catch((error) => {
@@ -219,6 +281,26 @@
   .playful {
     color: var(--white);
     font-size: 40px;
+  }
+
+  .sort-article-first {
+    margin: 40px auto 20px;
+    display: flex;
+    justify-content: space-between;
+    color: var(--greyFont);
+    border-bottom: 1px dashed var(--lightGray);
+    padding-bottom: 5px;
+  }
+
+  .article-more {
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .article-more:hover {
+    color: var(--lightGreen);
+    font-weight: 700;
+    transform: scale(1.1);
   }
 
   /*.playful span {*/
@@ -354,7 +436,6 @@
     color: var(--greyFont);
     border-radius: 10px;
     display: flex;
-    max-width: 780px;
     margin: 40px auto 40px;
   }
 

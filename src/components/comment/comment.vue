@@ -108,6 +108,7 @@
                width="30%"
                :before-close="handleClose"
                :append-to-body="true"
+               :close-on-click-modal="false"
                destroy-on-close
                center>
       <div>
@@ -233,6 +234,9 @@
                 }
                 this.emoji(floorComment.childComments.records, false);
               }
+              this.$nextTick(() => {
+                this.$common.imgShow("#comment-content .pictureReg");
+              });
             }
           })
           .catch((error) => {

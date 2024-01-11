@@ -78,8 +78,8 @@ body {
 
 /* 滚动条 */
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -107,8 +107,8 @@ body {
 
 /* 选中样式 */
 ::selection {
-    background: var(--lightYellow);
-    color: var(--black);
+    background: var(--lightGreen);
+    color: var(--white);
 }
 
 /* 居中 */
@@ -249,8 +249,7 @@ body {
 
 .small-menu > li {
     list-style: none;
-    height: 50px;
-    line-height: 50px;
+    line-height: 40px;
     cursor: pointer;
 }
 

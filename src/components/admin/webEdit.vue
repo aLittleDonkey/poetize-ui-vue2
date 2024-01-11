@@ -41,7 +41,7 @@
           </div>
           <uploadPicture :isAdmin="true" :prefix="'webBackgroundImage'" style="margin-top: 15px"
                          @addPicture="addBackgroundImage"
-                         :maxSize="5"
+                         :maxSize="3"
                          :maxNumber="1"></uploadPicture>
         </el-form-item>
 
@@ -55,7 +55,7 @@
                       fit="cover"></el-image>
           </div>
           <uploadPicture :isAdmin="true" :prefix="'webAvatar'" style="margin-top: 15px" @addPicture="addAvatar"
-                         :maxSize="5"
+                         :maxSize="2"
                          :maxNumber="1"></uploadPicture>
         </el-form-item>
 
@@ -234,7 +234,7 @@
       </el-input>
       <el-button v-else class="button-new-tag" size="small" @click="showRandomCoverInput">+ 随机封面</el-button>
       <uploadPicture :isAdmin="true" :prefix="'randomCover'" style="margin: 10px" @addPicture="addRandomCover"
-                     :maxSize="5"
+                     :maxSize="2"
                      :maxNumber="5"></uploadPicture>
       <div class="myCenter" style="margin-bottom: 40px">
         <el-button type="primary" @click="saveRandomCover()">保存</el-button>

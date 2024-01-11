@@ -116,6 +116,12 @@
       <!-- 文章 -->
       <div style="background: var(--background);">
         <div class="article-container my-animation-slide-bottom">
+          <div v-if="!$common.isEmpty(article.videoUrl)" style="margin-bottom: 20px">
+            <videoPlayer :url="{src: $common.decrypt(article.videoUrl)}"
+                         :cover="!$common.isEmpty(article.articleCover)?article.articleCover:$constant.random_image+new Date()+Math.floor(Math.random()*10)">
+            </videoPlayer>
+          </div>
+
           <!-- 最新进展 -->
           <div v-if="!$common.isEmpty(treeHoleList)" class="process-wrap">
             <el-collapse accordion value="1">
@@ -164,10 +170,15 @@
         <myFooter></myFooter>
       </div>
 
+      <div id="toc-button" @click="clickTocButton()">
+        <i class="fa fa-align-justify" aria-hidden="true"></i>
+      </div>
+
       <el-dialog title="最新进展"
                  :visible.sync="weiYanDialogVisible"
                  width="40%"
                  :append-to-body="true"
+                 :close-on-click-modal="false"
                  destroy-on-close
                  center>
         <div>
@@ -220,6 +231,7 @@
   const process = () => import( "./common/process");
   const commentBox = () => import( "./comment/commentBox");
   const proButton = () => import( "./common/proButton");
+  const videoPlayer = () => import( "./common/videoPlayer");
   import MarkdownIt from 'markdown-it';
 
   export default {
@@ -228,7 +240,8 @@
       comment,
       commentBox,
       proButton,
-      process
+      process,
+      videoPlayer
     },
 
     data() {
@@ -242,7 +255,8 @@
         newsTime: "",
         showPasswordDialog: false,
         password: "",
-        tips: ""
+        tips: "",
+        scrollTop: 0
       };
     },
     created() {
@@ -261,9 +275,30 @@
       }
     },
     mounted() {
-      // window.addEventListener("scroll", this.onScrollPage);
+      window.addEventListener("scroll", this.onScrollPage);
+    },
+    destroyed() {
+      window.removeEventListener("scroll", this.onScrollPage);
+    },
+    watch: {
+      scrollTop(scrollTop, oldScrollTop) {
+        let isShow = scrollTop - window.innerHeight > 30;
+        if (isShow) {
+          $("#toc-button").css("bottom", "15vh");
+        } else {
+          $("#toc-button").css("bottom", "8vh");
+        }
+      },
     },
     methods: {
+      clickTocButton() {
+        let display = $(".toc");
+        if ("none" === display.css("display")) {
+          display.css("display", "unset");
+        } else {
+          display.css("display", "none");
+        }
+      },
       subscribeLabel() {
         if (this.$common.isEmpty(this.$store.state.currentUser)) {
           this.$message({
@@ -393,15 +428,11 @@
           });
       },
       onScrollPage() {
-        let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-        if (scrollTop < (window.innerHeight / 4)) {
-          $(".toc").css("top", window.innerHeight / 2);
-          $(".toc").css("display", "unset");
-        } else if (scrollTop > (window.innerHeight / 4) && scrollTop < ($("#article-like").offset().top - window.innerHeight)) {
-          $(".toc").css("top", "100px");
-          $(".toc").css("display", "unset");
+        this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        if (this.scrollTop < (window.innerHeight / 4)) {
+          $(".toc").css("top", window.innerHeight / 4);
         } else {
-          $(".toc").css("display", "none");
+          $(".toc").css("top", "90px");
         }
       },
       getTocbot() {
@@ -415,7 +446,7 @@
           tocbot.init({
             tocSelector: '#toc',
             contentSelector: '.entry-content',
-            headingSelector: 'h1, h2, h3, h4, h5, h6',
+            headingSelector: 'h1, h2, h3, h4, h5',
             scrollSmooth: true,
             fixedSidebarOffset: 'auto',
             scrollSmoothOffset: -100,
@@ -433,13 +464,12 @@
             if (!this.$common.isEmpty(res.data)) {
               this.article = res.data;
               this.getNews();
-              const md = new MarkdownIt({breaks: true});
+              const md = new MarkdownIt({breaks: true}).use(require('markdown-it-multimd-table'));
               this.articleContentHtml = md.render(this.article.articleContent);
               this.$nextTick(() => {
                 this.highlight();
                 this.addId();
-                // todo 只有程序相关文章才显示toc
-                // this.getTocbot();
+                this.getTocbot();
               });
               if (!this.$common.isEmpty(password)) {
                 localStorage.setItem("article_password_" + this.id, password);
@@ -700,6 +730,21 @@
     line-height: 1.5;
   }
 
+  #toc-button {
+    position: fixed;
+    right: 3vh;
+    bottom: 8vh;
+    animation: slide-bottom 0.5s ease-in-out both;
+    z-index: 100;
+    cursor: pointer;
+    font-size: 23px;
+    width: 30px;
+  }
+
+  #toc-button:hover {
+    color: var(--themeBackground);
+  }
+
   @media screen and (max-width: 700px) {
     .article-info-container {
       left: 20px;
@@ -708,6 +753,12 @@
 
     .article-info-news {
       right: 20px;
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    #toc-button {
+      right: 0.5vh;
     }
   }
 </style>

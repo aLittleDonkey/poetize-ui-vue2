@@ -71,7 +71,7 @@
                   id: m.id,
                   avatar: m.avatar,
                   msg: m.message,
-                  time: Math.floor(Math.random() * 10 + 5)
+                  time: Math.floor(Math.random() * 5 + 10)
                 });
               });
             }
@@ -108,7 +108,7 @@
                 id: res.data.id,
                 avatar: res.data.avatar,
                 msg: res.data.message,
-                time: Math.floor(Math.random() * 10 + 5)
+                time: Math.floor(Math.random() * 5 + 10)
               });
             }
           })

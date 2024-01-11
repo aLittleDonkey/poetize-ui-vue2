@@ -21,6 +21,10 @@
         <el-input maxlength="30" v-model="article.articleTitle"></el-input>
       </el-form-item>
 
+      <el-form-item label="视频链接" prop="videoUrl">
+        <el-input maxlength="1000" v-model="article.videoUrl"></el-input>
+      </el-form-item>
+
       <el-form-item label="内容" prop="articleContent">
         <mavon-editor ref="md" @imgAdd="imgAdd" v-model="article.articleContent"/>
       </el-form-item>
@@ -118,6 +122,7 @@
           password: "",
           tips: "",
           articleCover: "",
+          videoUrl: "",
           sortId: null,
           labelId: null
         },
@@ -186,6 +191,7 @@
 
         let fd = new FormData();
         fd.append("file", file);
+        fd.append("originalName", file.name);
         fd.append("key", key);
         fd.append("relativePath", key);
         fd.append("type", "articlePicture");
@@ -223,7 +229,7 @@
                   if (!this.$common.isEmpty(res.key)) {
                     let url = this.$constant.qiniuDownload + res.key;
                     let file = fd.get("file");
-                    this.$common.saveResource(this, "articlePicture", url, file.size, file.type, "qiniu", true);
+                    this.$common.saveResource(this, "articlePicture", url, file.size, file.type, file.name, "qiniu", true);
                     this.$refs.md.$img2Url(pos, url);
                   }
                 })

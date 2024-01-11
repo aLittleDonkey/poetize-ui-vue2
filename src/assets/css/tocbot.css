@@ -1,32 +1,49 @@
 .toc {
-    overflow-y: auto;
-    width: 150px;
-    max-height: 300px;
+    width: 250px;
     position: fixed;
-    top: 50vh;
-    right: 50px;
-    background: var(--background);
-    border-radius: 5px;
+    top: calc(100vh / 4);
+    right: 3vh;
+    background: var(--commentContent);
+    border-radius: 8px;
     z-index: 100;
     transition: all 1s;
+    padding: 10px 10px 10px 5px;
+    color: var(--maxGreyFont);
 }
 
-.toc::-webkit-scrollbar {
-    display: none;
+.toc::before {
+    content: '🏖️目录';
+    font-size: 24px;
+    line-height: 40px;
+    margin-left: 55px;
 }
 
 .toc > .toc-list {
-    overflow: hidden;
+    overflow-y: scroll;
+    max-height: 52vh;
     position: relative;
+    padding-inline-start: 35px !important;
+    padding-right: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
-.toc > .toc-list li {
-    list-style: none;
+.toc > .toc-list::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+.toc > .toc-list::-webkit-scrollbar-track {
+    background-color: rgba(73, 177, 245, 0.2);
+}
+
+.toc > .toc-list::-webkit-scrollbar-thumb {
+    background-color: var(--lightGreen);
+    border-radius: 1em;
 }
 
 .toc .toc-list {
-    margin: 0;
-    padding: 4px 4px 4px 10px;
+    padding-inline-start: 25px;
 }
 
 .toc a.toc-link {
@@ -45,22 +62,15 @@
     max-height: 0;
 }
 
+.toc .toc-link {
+    margin: 4px 0;
+    display: block;
+}
+
 .toc .is-active-link {
     font-weight: 700;
-    color: var(--green) !important;
-}
-
-.toc .toc-link::before {
-    background-color: #EEE;
-    content: ' ';
-    display: inline-block;
-    height: inherit;
-    left: 0;
-    margin-top: -1px;
-    position: absolute;
-    width: 2px;
-}
-
-.toc .is-active-link::before {
-    background-color: var(--green);
+    color: var(--white) !important;
+    background: var(--lightGreen);
+    padding: 4px 8px;
+    border-radius: 5px;
 }

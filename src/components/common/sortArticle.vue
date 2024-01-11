@@ -1,25 +1,11 @@
 <template>
   <div v-if="!$common.isEmpty(articleList)" class="recent-post-container">
-    <div class="article-first">
-      <svg viewBox="0 0 1024 1024" width="20" height="20" style="vertical-align: -2px;">
-        <path
-          d="M224.2 472.3c-13-5.7-3.7-23.5 8.2-19 91 34 146.8 108.7 182.4 138.5 5.6 4.7 14 2.9 17.3-3.5 16.8-32 45.8-113.7-57.1-168.6-87.3-46.5-188-53.6-247.3-82.2-14.5-7-31.1 4.6-29.9 20.7 5 69.7 28.9 124.7 62.3 181.5 67.3 114.3 140.6 132.9 216.6 104 2.2-0.9 4.5-1.8 7-3 7-3.4 8.3-12.9 2.5-18.1 0.1 0-45.7-69.3-162-150.3z"
-          fill="#FFD401"></path>
-        <path
-          d="M282.7 849.9c79.5-137 172.4-263.1 385.4-401.3 9.8-6.4 2.1-21.5-8.9-17.4C497.7 492.8 429.7 585 373.3 640.8c-8.7 8.7-23.4 6.3-29.1-4.6-27.2-51.8-69.5-174.1 97.3-263.1 147.7-78.8 319.9-91.4 429.7-93.3 18.9-0.3 31.5 19.4 23.3 36.4C863.7 380 842.6 478 789.9 567.6 680.8 753.1 545.5 766.7 422.2 719.8c-8.8-3.4-18.8-0.2-24 7.7-16.6 25.2-50.3 80.1-58.7 122.4-11.4 56.8-82.2 43.9-56.8 0z"
-          fill="#8BC03C"></path>
-        <path
-          d="M375 419.6c-30.1 28.2-45.8 57.7-52.4 86.1 40.6 32.4 70.2 67.7 92.1 85.9 1.2 1 2.5 1.6 3.9 2.1 6.5-6.7 13.3-13.7 20.4-20.7 15.2-37.9 25.3-105.7-64-153.4zM318.8 548.2c1.6 36.1 14.7 67.6 25.5 88.1 5.7 10.9 20.3 13.3 29.1 4.6 4.9-4.9 10-10 15.1-15.4-0.6-1-1.3-2-2.2-2.8 0-0.1-20.1-30.5-67.5-74.5z"
-          fill="#8BA000"></path>
-      </svg>
-      发现
-    </div>
-    <div class="recent-post-item shadow-box background-opacity"
+    <div class="recent-post-item shadow-box background-opacity wow"
          v-for="(article, index) in articleList"
          :key="index"
          @click="$router.push({path: '/article', query: {id: article.id}})">
       <!-- 封面 -->
-      <div class="recent-post-item-image" :class="{ leftImage: index % 2 !== 0, rightImage: index % 2 === 0 }">
+      <div class="recent-post-item-image">
         <el-image class="my-el-image"
                   v-once
                   lazy
@@ -33,7 +19,7 @@
         </el-image>
       </div>
       <!-- 内容 -->
-      <div class="recent-post-item-post" :class="{ leftImage: index % 2 === 0, rightImage: index % 2 !== 0 }">
+      <div class="recent-post-item-post">
         <!-- 时间 -->
         <div class="post-meta">
           <svg viewBox="0 0 1024 1024" width="14" height="14" style="vertical-align: -2px;">
@@ -55,7 +41,7 @@
         </el-tooltip>
 
         <!-- 信息 -->
-        <div class="post-meta" style="margin-bottom: 15px">
+        <div class="post-meta" style="margin-bottom: 10px">
           <span>
             <svg viewBox="0 0 1024 1024" width="14" height="14" style="vertical-align: -2px;">
               <path d="M14.656 512a497.344 497.344 0 1 0 994.688 0 497.344 497.344 0 1 0-994.688 0z"
@@ -160,37 +146,28 @@
 </script>
 
 <style scoped>
-  .article-first {
-    color: var(--greyFont);
-    border-bottom: 1px dashed var(--lightGray);
-    padding-bottom: 5px;
-    margin-bottom: 50px;
-  }
 
   .recent-post-container {
-    max-width: 780px;
-    margin: auto;
-  }
-
-  .recent-post-container .recent-post-item:not(:last-child) {
-    margin-bottom: 40px;
+    display: flex;
+    flex-wrap: wrap;
   }
 
   .recent-post-item {
-    height: 300px;
     position: relative;
-    display: flex;
-    flex-direction: row;
     user-select: none;
-    cursor: pointer;
-    overflow: hidden;
     border-radius: 10px;
-    animation: hideToShow 1s ease-in-out;
+    overflow: hidden;
+    margin: 10px;
+    height: 350px;
+    flex-shrink: 0;
+    width: calc(100% / 3 - 20px);
+    cursor: pointer;
+    animation: zoomIn 0.8s ease-in-out;
   }
 
   .recent-post-item-image {
-    width: 50%;
-    height: 100%;
+    width: 100%;
+    height: 170px;
   }
 
   .recent-post-item-image >>> .el-image__inner {
@@ -201,29 +178,18 @@
     transform: scale(1.2);
   }
 
-  .leftImage {
-    position: absolute;
-    left: 0;
-  }
-
-  .rightImage {
-    position: absolute;
-    right: 0;
-    text-align: right;
-  }
-
   .recent-post-item-post {
-    width: 50%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 20px 35px;
+    width: 100%;
+    height: 180px;
+    padding: 10px 15px;
   }
 
   .recent-post-item-post h3 {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    margin-top: 15px;
+    margin-bottom: 15px;
   }
 
   .post-meta {
@@ -231,34 +197,23 @@
     color: var(--greyFont);
   }
 
-  .post-meta span:not(:last-child) {
-    margin-right: 10px;
-  }
-
   .recent-post-desc {
-    font-size: 15px;
-    line-height: 1.7;
-    /* 超出4行就... */
+    font-size: 13px;
+    line-height: 1.4;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
 
-  .leftImage .sort-label {
+  .sort-label {
     position: absolute;
-    bottom: 20px;
-  }
-
-  .rightImage .sort-label {
-    position: absolute;
-    bottom: 20px;
-    right: 35px;
+    bottom: 10px;
   }
 
   .sort-label span {
-    padding: 3px 10px;
+    padding: 2px 4px;
     background-color: var(--maxLightGray);
     border-radius: 3px;
     font-size: 14px;
@@ -276,53 +231,20 @@
   .error-text {
     font-size: 20px;
     line-height: 1.8;
-    letter-spacing: 8px;
+    letter-spacing: 4px;
     color: var(--white);
   }
 
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 1400px) {
     .recent-post-item {
-      height: 450px;
-      position: unset;
-      display: block;
-      flex-direction: unset;
-    }
-
-    .recent-post-item-image {
-      width: 100%;
-      height: 200px;
-    }
-
-    .leftImage {
-      position: unset;
-      left: unset;
-    }
-
-    .rightImage {
-      position: unset;
-      right: unset;
-      text-align: unset;
-    }
-
-    .recent-post-item-post {
-      width: 100%;
-      height: 250px;
-      position: relative;
-    }
-
-    .recent-post-desc {
-      -webkit-line-clamp: 3;
-    }
-
-    .leftImage .sort-label {
-      position: absolute;
-      bottom: 20px;
-    }
-
-    .rightImage .sort-label {
-      position: absolute;
-      bottom: 20px;
-      right: unset;
+      width: calc(100% / 2 - 20px);
     }
   }
+
+  @media screen and (max-width: 600px) {
+    .recent-post-item {
+      width: calc(100% - 20px);
+    }
+  }
+
 </style>

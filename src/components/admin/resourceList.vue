@@ -3,6 +3,7 @@
     <div>
       <div class="handle-box">
         <el-select clearable v-model="pagination.resourceType" placeholder="资源类型" class="handle-select mrb10">
+          <el-option key="21" label="Video.Article" value="video/article"></el-option>
           <el-option key="20" label="公共资源" value="assets"></el-option>
           <el-option key="10" label="表情包" value="internetMeme"></el-option>
           <el-option key="1" label="用户头像" value="userAvatar"></el-option>
@@ -29,6 +30,7 @@
       </div>
       <el-table :data="resources" border class="table" header-cell-class-name="table-header">
         <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
+        <el-table-column prop="originalName" label="名称" align="center"></el-table-column>
         <el-table-column prop="userId" label="用户ID" align="center"></el-table-column>
         <el-table-column prop="type" label="资源类型" align="center"></el-table-column>
         <el-table-column label="状态" align="center">
@@ -79,10 +81,11 @@
       </div>
     </div>
 
-    <el-dialog title="图片"
+    <el-dialog title="文件"
                :visible.sync="resourceDialog"
                width="25%"
                :append-to-body="true"
+               :close-on-click-modal="false"
                destroy-on-close
                center>
       <div>
@@ -97,9 +100,10 @@
             </el-option>
           </el-select>
         </div>
-        <uploadPicture :isAdmin="true" :prefix="pagination.resourceType" @addPicture="addPicture" :maxSize="5"
+        <uploadPicture :isAdmin="true" :prefix="pagination.resourceType" @addPicture="addFile"
                        :storeType="storeType"
-                       :maxNumber="10"></uploadPicture>
+                       :listType="'text'" :accept="'image/*, video/*, audio/*'"
+                       :maxSize="100" :maxNumber="10"></uploadPicture>
       </div>
     </el-dialog>
   </div>
@@ -173,7 +177,7 @@
         });
       },
 
-      addPicture(res) {
+      addFile(res) {
       },
 
       addResources() {

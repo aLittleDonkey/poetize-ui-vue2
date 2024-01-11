@@ -67,10 +67,11 @@
                :visible.sync="coverDialog"
                width="25%"
                :append-to-body="true"
+               :close-on-click-modal="false"
                destroy-on-close
                center>
       <div>
-        <uploadPicture :isAdmin="true" :prefix="resourcePath.type + 'Cover'" @addPicture="addPicture" :maxSize="5"
+        <uploadPicture :isAdmin="true" :prefix="resourcePath.type + 'Cover'" @addPicture="addPicture" :maxSize="2"
                        :maxNumber="1"></uploadPicture>
       </div>
     </el-dialog>
@@ -79,6 +80,7 @@
                :visible.sync="uploadDialog"
                width="25%"
                :append-to-body="true"
+               :close-on-click-modal="false"
                destroy-on-close
                center>
       <div>

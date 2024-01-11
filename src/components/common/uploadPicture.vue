@@ -114,12 +114,13 @@
         if (this.storeType === "local") {
           let fd = new FormData();
           fd.append("file", options.file);
+          fd.append("originalName", options.file.name);
           fd.append("key", key);
           fd.append("relativePath", key);
           fd.append("type", this.prefix);
           fd.append("storeType", this.storeType);
 
-          return this.$http.upload(this.$constant.baseURL + "/resource/upload", fd, this.isAdmin);
+          return this.$http.upload(this.$constant.baseURL + "/resource/upload", fd, this.isAdmin, options);
         } else if (this.storeType === "qiniu") {
           const xhr = new XMLHttpRequest();
           xhr.open('get', this.$constant.baseURL + "/qiniu/getUpToken?key=" + key, false);
@@ -156,7 +157,7 @@
           url = response.data;
         } else if (this.storeType === "qiniu") {
           url = this.$constant.qiniuDownload + response.key;
-          this.$common.saveResource(this, this.prefix, url, file.size, file.raw.type, "qiniu", this.isAdmin);
+          this.$common.saveResource(this, this.prefix, url, file.size, file.raw.type, file.name, "qiniu", this.isAdmin);
         }
         this.$emit("addPicture", url);
       },

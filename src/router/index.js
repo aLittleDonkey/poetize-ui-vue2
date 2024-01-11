@@ -49,10 +49,6 @@ const routes = [
       name: "friend",
       component: () => import('../components/friend')
     }, {
-      path: "/funny",
-      name: "funny",
-      component: () => import('../components/funny')
-    }, {
       path: "/about",
       name: "about",
       component: () => import('../components/about')

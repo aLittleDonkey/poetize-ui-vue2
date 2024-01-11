@@ -12,10 +12,134 @@
 这是一个 Spring Boot + Vue2 + Vue3 的产物。
 
 网站分两个模块：
-- 博客系统：具有文章，留言，友链，时间线，后台管理等功能。
+- 博客系统：具有文章，表白墙，图片墙，收藏夹，乐曲，视频播放，留言，友链，时间线，后台管理等功能。
 - 聊天室系统：具有朋友圈（时间线），好友，群等功能。
 
-本网站搭建于阿里云，采用前后端分离进行实现，两个前端项目通过Nginx代理。
+本网站采用前后端分离进行实现，两个前端项目通过Nginx代理，后端使用Java。
+启动网站需要安装Nginx、Java、MySQL，然后打包前后端项目并部署。
+文件服务可以使用七牛云，也可以使用服务器。
+Vue3（IM 聊天室系统）是非必须的，如果部署需要依赖博客，然后从博客的非礼勿言进入，因为登录模块在博客。
+
+nginx配置示例：
+```
+worker_processes  1;
+ 
+events {
+    worker_connections  1024;
+}
+ 
+http {
+    include            mime.types;
+ 
+    default_type       application/octet-stream;
+ 
+    sendfile           on;
+ 
+    keepalive_timeout  65;
+ 
+    server {
+        listen       80;
+        server_name  localhost;
+ 
+        location / {
+            root       /home/poetry-vue2;
+            index      index.html;
+            try_files  $uri $uri/ /index.html;
+        }
+ 
+        location /im {
+            alias      /home/poetry-vue3;
+            index      index.html;
+            try_files  $uri $uri/ /index.html;
+        }
+ 
+        location /api/ {
+            rewrite           ^/api/(.*)$ /$1 break;
+            proxy_pass        http://127.0.0.1:8081;
+            proxy_redirect    off;
+            proxy_set_header  Host $host;
+            proxy_set_header  X-real-ip $remote_addr;
+            proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+ 
+        location /socket {
+            proxy_pass          http://127.0.0.1:9324;
+            proxy_http_version  1.1;
+            proxy_set_header    Upgrade $http_upgrade;
+            proxy_set_header    Connection "upgrade";
+            proxy_read_timeout  600s;
+        }
+    }
+}
+```
+
+文件服务配置示例：
+```
+在application.yml加入如下配置：
+
+server:
+  tomcat:
+    # 请求体最大允许大小
+    max-http-form-post-size: 35MB
+ 
+spring:
+  servlet:
+    multipart:
+      # 单个文件最大允许大小
+      max-file-size: 30MB
+      # 单个请求所有文件总和最大允许大小
+      max-request-size: 30MB
+ 
+store:
+  # 默认存储平台
+  type: qiniu
+ 
+# 存储平台：服务器
+local:
+  # 开启服务器存储平台。使用哪个存储平台就配置哪个存储平台的参数，并开启此存储平台：enable: true。
+  enable: true
+  uploadUrl:
+  downloadUrl:
+ 
+# 存储平台：七牛云
+qiniu:
+  # 开启七牛云存储平台。使用哪个存储平台就配置哪个存储平台的参数，并开启此存储平台：enable: true。
+  enable: true
+  accessKey:
+  secretKey:
+  bucket:
+  downloadUrl:
+
+
+在nginx.conf加入如下配置：
+
+# 禁止访问隐藏目录(.git/)和隐藏文件(.file)和遍历目录(../)
+location ~ /\. {
+    deny all;
+    # 关闭相关的访问日志
+    access_log off;
+    # 关闭相关的错误日志
+    log_not_found off;
+}
+ 
+location /static/ {
+    # 静态文件存储的目录
+    alias /home/file/;
+    # 禁止目录列表
+    autoindex off;
+    # 设置防盗链
+    valid_referers poetize.cn;
+    if ($invalid_referer) {
+        # 如果防盗链不通过，返回 403 禁止访问
+        return 403;
+    }
+}
+
+然后将文件上传到/home/file目录下访问即可。
+
+例如有文件：/home/file/bg/bg.jpg
+访问链接：https://poetize.cn/static/bg/bg.jpg
+```
 
 ### 2023年1月1日更新
 - 新增：音乐盒功能
@@ -60,6 +184,14 @@
 - 新增：文件上传模块改造，支持多平台（目前对接本地）
 - 优化：友人帐及其他模块样式调整
 
+### 2024年1月10日更新
+- 新增：首页分类预览
+- 新增：文章视频
+- 新增：文章目录
+- 新增：留言与朋友圈图片放大
+- 新增：上传进度条与原始文件名记录
+- 优化：百宝箱及其他模块样式调整
+
 ### 首页
 ![首页](首页.jpg)
 
@@ -97,48 +229,36 @@ npm run build
 ```
 
 ## 配置
-全局搜索：`$$$$`
+全局搜索`$$$$`，配置邮箱、MySQL、访问路径等。
 
-替换成自己自定义的内容，因为Https无法跨域，这些内容需要用自己的。
+全局搜索`https://`，将图片资源替换成自己自定义的内容，提高网站美化度。
 
 - 博客：https://gitee.com/littledokey/poetize-vue2.git
 - 聊天室：https://gitee.com/littledokey/poetize-im-vue3.git
 - 后端：https://gitee.com/littledokey/poetize.git
-- 部署文档：https://poetize.cn/article?id=26
 - 七牛云登录/注册地址（文件服务器，CDN）：https://s.qiniu.com/Mz6Z32
 
-### 重点事情说三遍
+### Star
 `Star`
 
 `Star`
 
 `Star`
 
-一定要`Star`
+注意：[poetize.cn](https://poetize.cn)，谢谢Star，为这个项目点赞。
 
-注意：[poetize.cn](https://poetize.cn)可能会下线，也可能不会，看缘分吧。
+## 开源不易，欢迎赞助这个项目，让这个项目越来越好
+感谢您【V 29.9￥】支持该项目，您将获得：
+1. 学习交流群
+2. 在线答疑
+3. 详细部署文档：[https://poetize.cn/article?id=26](https://poetize.cn/article?id=26)
 
-## 欢迎进群（一定要Star）
-1. 交流（摸鱼）
-2. 安装部署：互相帮助，争取每个人都零基础拥有自己的个人网站
-3. 博客答疑：每段代码都是我自己写的，爱学习的小伙伴可以在这里提问，互相学习，互相进步
-4. 漏洞反馈：欢迎提交BUG
-5. 迭代升级：欢迎提好的创意
-
-群名片七天有效，如果需要请加作者好友（请务必Star，并注明来源），然后拉进交流群（请按需加群，有问题先看文档再咨询网友，退群后删除好友）。
-
-目前（2023年8月10）群活跃度较高，群友们相互帮助，热心答疑。群友们制作了全流程源码部署教程详细文档、宝塔部署教程等，使得项目逐渐完善。
-
-如果觉得群友对你有所帮助，请表达感谢，为营造群内良好氛围出一份力，谢谢。
-
-希望大家一起让这个项目越来越好。
+如果需要，请联系作者【微信号：poetize-sara】
 
 ![个人名片](一只小毛驴.jpg)
 
-开源不易，欢迎赞助这个项目，让这个项目越来越好。
-
 ## 欢迎关注作者B站
-B站搜索用户【寻国记】，博客介绍与搭建教程。
+B站搜索用户【寻国记】，博客介绍与搭建教程简介。
 
 【挑战最美博客！个人博客网站食用教程。这是一个 SpringBoot 与 Vue 的产物，在此公开，一起学习，共同成长。】
 https://www.bilibili.com/video/BV1eM41167Ks/?share_source=copy_web

@@ -31,6 +31,7 @@
                :before-close="handleClose"
                :append-to-body="true"
                destroy-on-close
+               :close-on-click-modal="false"
                center>
       <div>
         <div class="myCenter" style="padding-bottom: 20px">
@@ -183,6 +184,7 @@
             }
             this.$nextTick(() => {
               this.showFooter = true;
+              this.$common.imgShow(".tree-hole-box .pictureReg");
             });
           })
           .catch((error) => {
