@@ -67,7 +67,7 @@
         </el-form-item>
       </el-form>
       <div class="myCenter" style="margin-bottom: 22px">
-        <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">保存基本信息</el-button>
       </div>
     </div>
 
@@ -102,7 +102,7 @@
       </el-input>
       <el-button v-else class="button-new-tag" size="small" @click="showNoticeInput()">+ 公告</el-button>
       <div class="myCenter" style="margin-bottom: 22px">
-        <el-button type="primary" @click="saveNotice()">保存</el-button>
+        <el-button type="primary" @click="saveNotice()">保存公告</el-button>
       </div>
     </div>
 
@@ -139,7 +139,7 @@
       </el-input>
       <el-button v-else class="button-new-tag" size="small" @click="showRandomNameInput">+ 随机名称</el-button>
       <div class="myCenter" style="margin-bottom: 22px">
-        <el-button type="primary" @click="saveRandomName()">保存</el-button>
+        <el-button type="primary" @click="saveRandomName()">保存随机名称</el-button>
       </div>
     </div>
 
@@ -188,7 +188,7 @@
                      :maxSize="1"
                      :maxNumber="5"></uploadPicture>
       <div class="myCenter" style="margin-bottom: 22px">
-        <el-button type="primary" @click="saveRandomAvatar()">保存</el-button>
+        <el-button type="primary" @click="saveRandomAvatar()">保存随机头像</el-button>
       </div>
     </div>
 
@@ -237,7 +237,7 @@
                      :maxSize="2"
                      :maxNumber="5"></uploadPicture>
       <div class="myCenter" style="margin-bottom: 40px">
-        <el-button type="primary" @click="saveRandomCover()">保存</el-button>
+        <el-button type="primary" @click="saveRandomCover()">保存随机封面</el-button>
       </div>
     </div>
 

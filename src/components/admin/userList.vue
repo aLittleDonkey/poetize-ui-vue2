@@ -3,7 +3,7 @@
     <div>
       <div class="handle-box">
         <el-select v-model="pagination.userType" placeholder="用户类型" class="handle-select mrb10">
-          <el-option key="1" label="Boss" :value="0"></el-option>
+          <el-option key="1" label="站长" :value="0"></el-option>
           <el-option key="2" label="管理员" :value="1"></el-option>
           <el-option key="3" label="普通用户" :value="2"></el-option>
         </el-select>
@@ -11,7 +11,7 @@
           <el-option key="1" label="启用" :value="true"></el-option>
           <el-option key="2" label="禁用" :value="false"></el-option>
         </el-select>
-        <el-input v-model="pagination.searchKey" placeholder="用户名/手机号" class="handle-input mrb10"></el-input>
+        <el-input v-model="pagination.searchKey" placeholder="用户名/手机号/邮箱" class="handle-input mrb10"></el-input>
         <el-button type="primary" icon="el-icon-search" @click="searchUser()">搜索</el-button>
         <el-button type="danger" @click="clearSearch()">清除参数</el-button>
       </div>
@@ -32,7 +32,7 @@
                     disable-transitions>
               {{scope.row.userStatus === false ? '禁用' : '启用'}}
             </el-tag>
-            <el-switch @click.native="changeUserStatus(scope.row)" v-model="scope.row.userStatus"></el-switch>
+            <el-switch v-if="scope.row.id !== $store.state.currentAdmin.id" @click.native="changeUserStatus(scope.row)" v-model="scope.row.userStatus"></el-switch>
           </template>
         </el-table-column>
         <el-table-column label="头像" align="center">
@@ -64,10 +64,8 @@
           <template slot-scope="scope">
             <el-tag type="success"
                     v-if="scope.row.userType === 0"
-                    style="cursor: pointer"
-                    @click.native="editUser(scope.row)"
                     disable-transitions>
-              Boss
+              站长
             </el-tag>
             <el-tag type="success"
                     v-else-if="scope.row.userType === 1"
@@ -107,7 +105,6 @@
                center>
       <div class="myCenter">
         <el-radio-group v-model="changeUser.userType">
-          <el-radio-button :label="0">Boss</el-radio-button>
           <el-radio-button :label="1">管理员</el-radio-button>
           <el-radio-button :label="2">普通用户</el-radio-button>
         </el-radio-group>

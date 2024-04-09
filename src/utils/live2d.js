@@ -101,7 +101,20 @@ function loadWidget(config) {
   let userAction = false,
     userActionTimer,
     messageTimer,
-    messageArray = ["好久不见，日子过得好快呢……", "大坏蛋！你都多久没理人家了呀，嘤嘤嘤～", "嗨～快来逗我玩吧！", "拿小拳拳锤你胸口！", "记得把小家加入 Adblock 白名单哦！"];
+    messageArray = [
+      "我是一个特别固执的人，我从来不会在意别人跟我说什么，让我去做，让我去怎么做，我不管。如果，你也可以像我一样，那我觉得，这件事情，太酷辣!!!",
+      "我厉害，你给我大拇哥！",
+      "那些说我们的网站土的人，说抄袭的人，说我们文章拉的人，说我吃饱了撑的人，你给我大拇哥！",
+      "好久不见，日子过得好快呢……",
+      "嘤嘤嘤～",
+      "嗨～快来逗我玩吧！",
+      "退、退、退",
+      "很喜欢上班，有种上坟的感觉。",
+      "很喜欢放假，有种刑满释放的感觉。",
+      "很喜欢看评论，有一种批阅奏折的感觉。",
+      "很喜欢发工资，有一种领低保的感觉。",
+      "记得把我加入 Adblock 白名单哦！"
+    ];
   window.addEventListener("mousemove", () => userAction = true);
   window.addEventListener("keydown", () => userAction = true);
   setInterval(() => {

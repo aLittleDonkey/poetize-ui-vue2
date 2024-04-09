@@ -5,7 +5,7 @@
       ref="upload"
       multiple
       drag
-      :action="$constant.qiniuUrl"
+      :action="$store.state.sysConfig.qiniuUrl"
       :on-change="handleChange"
       :before-upload="beforeUpload"
       :on-success="handleSuccess"
@@ -156,7 +156,7 @@
         if (this.storeType === "local") {
           url = response.data;
         } else if (this.storeType === "qiniu") {
-          url = this.$constant.qiniuDownload + response.key;
+          url = this.$store.state.sysConfig['qiniu.downloadUrl'] + response.key;
           this.$common.saveResource(this, this.prefix, url, file.size, file.raw.type, file.name, "qiniu", this.isAdmin);
         }
         this.$emit("addPicture", url);

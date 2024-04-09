@@ -9,7 +9,8 @@ export default new Vuex.Store({
     sortInfo: JSON.parse(localStorage.getItem("sortInfo") || '[]'),
     currentUser: JSON.parse(localStorage.getItem("currentUser") || '{}'),
     currentAdmin: JSON.parse(localStorage.getItem("currentAdmin") || '{}'),
-    webInfo: JSON.parse(localStorage.getItem("webInfo") || '{"webName": "", "webTitle": [], "notices": [], "footer": "", "backgroundImage": "", "avatar": ""}')
+    sysConfig: JSON.parse(localStorage.getItem("sysConfig") || '{}'),
+    webInfo: JSON.parse(localStorage.getItem("webInfo") || '{"webName": "", "webTitle": [], "notices": [], "randomCover": [], "footer": "", "backgroundImage": "", "avatar": ""}')
   },
   getters: {
     articleTotal: state => {
@@ -52,6 +53,10 @@ export default new Vuex.Store({
       state.currentUser = user;
       localStorage.setItem("currentUser", JSON.stringify(user));
     },
+    loadSysConfig(state, sysConfig) {
+      state.sysConfig = sysConfig;
+      localStorage.setItem("sysConfig", JSON.stringify(sysConfig));
+    },
     loadCurrentAdmin(state, user) {
       state.currentAdmin = user;
       localStorage.setItem("currentAdmin", JSON.stringify(user));
@@ -59,6 +64,7 @@ export default new Vuex.Store({
     loadWebInfo(state, webInfo) {
       webInfo.webTitle = webInfo.webTitle.split('');
       webInfo.notices = JSON.parse(webInfo.notices);
+      webInfo.randomCover = JSON.parse(webInfo.randomCover);
       state.webInfo = webInfo;
       localStorage.setItem("webInfo", JSON.stringify(webInfo));
     }

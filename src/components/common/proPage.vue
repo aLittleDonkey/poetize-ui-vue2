@@ -107,7 +107,7 @@
   .page-content {
     display: flex;
     padding: 0;
-    margin: 30px 0;
+    margin: 15px 0;
   }
 
   .page-item {

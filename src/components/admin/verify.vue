@@ -84,7 +84,7 @@
 
   .verify-container {
     height: 100vh;
-    background: var(--verifyImage) center center / cover repeat;
+    background: var(--backgroundPicture) center center / cover repeat;
   }
 
   .verify-content {

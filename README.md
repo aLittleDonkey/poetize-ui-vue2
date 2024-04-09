@@ -1,145 +1,98 @@
-# Poetize（Vue2）
+## POETIZE
+POETIZE：作诗，有诗意地描写。
 
 ## 网站示例
 [poetize.cn](https://poetize.cn)
 
+这是我的个人网站，我的生活倒影，有诗意地记录自己的生活。
+
+![首页](poetize_picture/首页.png)
+
+## Star
+ps: 虽然我知道，大部分人都是来了直接下载源代码后就潇洒的离开。
+
+虽然我知道现实就是如此的残酷，但我还是要以我萤虫之力对各位到来的同仁发出一声诚挚的嘶吼：`Star`，`Star`，`Star`
+
+相信各位同仁看到下面的项目介绍一定会心动的，心想`怎么没有早点遇到这么漂亮的博客项目`。在搭建这个美丽的网站同时，何不`Star`，为这个项目点赞呢！
+
 ## 技术栈
 前端技术：Vue2（博客系统），Vue3（IM 聊天室系统），Element UI（Vue2），Element-Plus UI（Vue3），Naive UI（Vue3）
 
-后端技术：Java，Spring Boot，spring-boot-starter-mail，Mysql，Mybatis-Plus，t-io，qiniu-java-sdk
+后端技术：Java，SpringBoot，MySQL，Mybatis-Plus，t-io，qiniu-java-sdk，spring-boot-starter-mail
+
+## 项目地址
+- 博客前端：https://gitee.com/littledokey/poetize-vue2.git
+- 聊天室前端：https://gitee.com/littledokey/poetize-im-vue3.git
+- 后端：https://gitee.com/littledokey/poetize-server.git
+- 博客前端、聊天室前端、后端汇总版（上述三个仓库放在一个仓库里，代码无差别）：https://gitee.com/littledokey/poetize
+- 七牛云登录/注册地址（文件服务器/CDN）：https://s.qiniu.com/Mz6Z32
+- 网站介绍与更新记录：https://poetize.cn/article/20
+- 部署文档和静态资源：https://poetize.cn/article/26
 
 ## 网站简介
-这是一个 Spring Boot + Vue2 + Vue3 的产物。
+这是一个 SpringBoot + Vue2 + Vue3 的产物，支持移动端自适应，配有完备的前台和后台管理功能。
 
 网站分两个模块：
 - 博客系统：具有文章，表白墙，图片墙，收藏夹，乐曲，视频播放，留言，友链，时间线，后台管理等功能。
 - 聊天室系统：具有朋友圈（时间线），好友，群等功能。
 
 本网站采用前后端分离进行实现，两个前端项目通过Nginx代理，后端使用Java。
-启动网站需要安装Nginx、Java、MySQL，然后打包前后端项目并部署。
-文件服务可以使用七牛云，也可以使用服务器。
-Vue3（IM 聊天室系统）是非必须的，如果部署需要依赖博客，然后从博客的非礼勿言进入，因为登录模块在博客。
 
-nginx配置示例：
-```
-worker_processes  1;
- 
-events {
-    worker_connections  1024;
-}
- 
-http {
-    include            mime.types;
- 
-    default_type       application/octet-stream;
- 
-    sendfile           on;
- 
-    keepalive_timeout  65;
- 
-    server {
-        listen       80;
-        server_name  localhost;
- 
-        location / {
-            root       /home/poetry-vue2;
-            index      index.html;
-            try_files  $uri $uri/ /index.html;
-        }
- 
-        location /im {
-            alias      /home/poetry-vue3;
-            index      index.html;
-            try_files  $uri $uri/ /index.html;
-        }
- 
-        location /api/ {
-            rewrite           ^/api/(.*)$ /$1 break;
-            proxy_pass        http://127.0.0.1:8081;
-            proxy_redirect    off;
-            proxy_set_header  Host $host;
-            proxy_set_header  X-real-ip $remote_addr;
-            proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
-        }
- 
-        location /socket {
-            proxy_pass          http://127.0.0.1:9324;
-            proxy_http_version  1.1;
-            proxy_set_header    Upgrade $http_upgrade;
-            proxy_set_header    Connection "upgrade";
-            proxy_read_timeout  600s;
-        }
-    }
-}
-```
+启动网站需要安装Nginx、Java、MySQL，然后打包前后端项目并部署，详细部署流程请见[部署文档和静态资源：https://poetize.cn/article/26](https://poetize.cn/article/26)。
 
-文件服务配置示例：
-```
-在application.yml加入如下配置：
+文件服务可以使用七牛云，也可以使用服务器。默认使用服务器。
 
-server:
-  tomcat:
-    # 请求体最大允许大小
-    max-http-form-post-size: 35MB
- 
-spring:
-  servlet:
-    multipart:
-      # 单个文件最大允许大小
-      max-file-size: 30MB
-      # 单个请求所有文件总和最大允许大小
-      max-request-size: 30MB
- 
-store:
-  # 默认存储平台
-  type: qiniu
- 
-# 存储平台：服务器
-local:
-  # 开启服务器存储平台。使用哪个存储平台就配置哪个存储平台的参数，并开启此存储平台：enable: true。
-  enable: true
-  uploadUrl:
-  downloadUrl:
- 
-# 存储平台：七牛云
-qiniu:
-  # 开启七牛云存储平台。使用哪个存储平台就配置哪个存储平台的参数，并开启此存储平台：enable: true。
-  enable: true
-  accessKey:
-  secretKey:
-  bucket:
-  downloadUrl:
+Vue3（IM 聊天室系统）是非必须的。如果部署，则需要依赖博客，然后从博客的“联系我”进入，因为登录模块在博客。
 
+## 网站示例（详细示例请见官方网站：[poetize.cn](https://poetize.cn)）
+>网站介绍与更新记录请移步：[https://poetize.cn/article/20](https://poetize.cn/article/20)，后续更新将在这里记录与发布。
 
-在nginx.conf加入如下配置：
+### 博客
 
-# 禁止访问隐藏目录(.git/)和隐藏文件(.file)和遍历目录(../)
-location ~ /\. {
-    deny all;
-    # 关闭相关的访问日志
-    access_log off;
-    # 关闭相关的错误日志
-    log_not_found off;
-}
- 
-location /static/ {
-    # 静态文件存储的目录
-    alias /home/file/;
-    # 禁止目录列表
-    autoindex off;
-    # 设置防盗链
-    valid_referers poetize.cn;
-    if ($invalid_referer) {
-        # 如果防盗链不通过，返回 403 禁止访问
-        return 403;
-    }
-}
+#### 文章速览、文章分类
+![首页文章速览](poetize_picture/首页文章速览.png)
 
-然后将文件上传到/home/file目录下访问即可。
+![分类页面](poetize_picture/分类页面.png)
 
-例如有文件：/home/file/bg/bg.jpg
-访问链接：https://poetize.cn/static/bg/bg.jpg
-```
+#### 文章详情页：文章、视频功能与留言
+![文章详情页](poetize_picture/文章详情页.png)
+
+![文章视频功能](poetize_picture/文章视频功能.png)
+
+![文章留言区域](poetize_picture/文章留言区域.png)
+
+#### 恋爱笔记与旅拍
+![恋爱笔记页面](poetize_picture/恋爱笔记页面.png)
+
+![旅拍页面](poetize_picture/旅拍页面.png)
+
+#### 百宝箱、弹幕墙与友人帐
+![百宝箱](poetize_picture/百宝箱.png)
+
+![弹幕墙](poetize_picture/弹幕墙.png)
+
+![友人帐](poetize_picture/友人帐.png)
+
+#### 聊天室与朋友圈
+![聊天室](poetize_picture/聊天室.png)
+
+![朋友圈](poetize_picture/朋友圈.png)
+
+### 后台管理系统
+
+#### 访问统计、基础设置与文件管理
+![后台管理访问统计](poetize_picture/后台管理访问统计.png)
+
+![后台管理网站基础设置](poetize_picture/后台管理网站基础设置.png)
+
+![后台管理文件资源管理](poetize_picture/后台管理文件资源管理.png)
+
+#### 文章管理与新增文章
+![后台管理文章管理](poetize_picture/后台管理文章管理.png)
+
+![后台管理新增文章](poetize_picture/后台管理新增文章.png)
+
+## 更新进度
 
 ### 2023年1月1日更新
 - 新增：音乐盒功能
@@ -192,73 +145,26 @@ location /static/ {
 - 新增：上传进度条与原始文件名记录
 - 优化：百宝箱及其他模块样式调整
 
-### 首页
-![首页](首页.jpg)
+### 2024年4月1日更新
+- 部署优化，提取配置文件到MySQL，无需编译打包环节
+- 前端编译压缩，提升访问速度
+- 部分样式美化
 
-### 推荐
-![推荐](推荐.jpg)
+### 2024年4月10日更新
+- 部署优化
+- 后端增加系统配置模块
+- 部分样式美化
 
-### 留言
-![留言](留言.jpg)
+========================================================================
 
-### 树洞
-![树洞](树洞.jpg)
+## 作者微信号：poetize-sara
+- 接收付费服务（定制开发、部署）
+- 接收毕业设计指导
 
-### 朋友圈（时间线）
-![朋友圈（时间线）](朋友圈（时间线）.jpg)
-
-### 友链
-![友链](友链.jpg)
-
-### 聊天室
-![聊天室](聊天室.jpg)
-
-## 安装
-```
-npm install
-```
-
-## 启动
-```
-npm run serve
-```
-
-## 编译
-```
-npm run build
-```
-
-## 配置
-全局搜索`$$$$`，配置邮箱、MySQL、访问路径等。
-
-全局搜索`https://`，将图片资源替换成自己自定义的内容，提高网站美化度。
-
-- 博客：https://gitee.com/littledokey/poetize-vue2.git
-- 聊天室：https://gitee.com/littledokey/poetize-im-vue3.git
-- 后端：https://gitee.com/littledokey/poetize.git
-- 七牛云登录/注册地址（文件服务器，CDN）：https://s.qiniu.com/Mz6Z32
-
-### Star
-`Star`
-
-`Star`
-
-`Star`
-
-注意：[poetize.cn](https://poetize.cn)，谢谢Star，为这个项目点赞。
-
-## 开源不易，欢迎赞助这个项目，让这个项目越来越好
-感谢您【V 29.9￥】支持该项目，您将获得：
-1. 学习交流群
-2. 在线答疑
-3. 详细部署文档：[https://poetize.cn/article?id=26](https://poetize.cn/article?id=26)
-
-如果需要，请联系作者【微信号：poetize-sara】
-
-![个人名片](一只小毛驴.jpg)
+## 开源不易，欢迎赞助这个项目维持网站运行，您将获得[部署文档和静态资源：https://poetize.cn/article/26](https://poetize.cn/article/26)
 
 ## 欢迎关注作者B站
-B站搜索用户【寻国记】，博客介绍与搭建教程简介。
+B站搜索用户【寻国记】。
 
 【挑战最美博客！个人博客网站食用教程。这是一个 SpringBoot 与 Vue 的产物，在此公开，一起学习，共同成长。】
 https://www.bilibili.com/video/BV1eM41167Ks/?share_source=copy_web

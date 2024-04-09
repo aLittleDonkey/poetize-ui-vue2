@@ -17,20 +17,29 @@
     <div class="recent-post-item shadow-box background-opacity"
          v-for="(article, index) in articleList"
          :key="index"
-         @click="$router.push({path: '/article', query: {id: article.id}})">
+         @click="$router.push({path: `/article/${article.id}`})">
       <!-- 封面 -->
       <div class="recent-post-item-image" :class="{ leftImage: index % 2 !== 0, rightImage: index % 2 === 0 }">
-        <el-image class="my-el-image"
-                  v-once
-                  lazy
-                  :src="!$common.isEmpty(article.articleCover)?article.articleCover:$constant.random_image+new Date()+Math.floor(Math.random()*10)"
-                  fit="cover">
-          <div slot="error" class="image-slot myCenter" style="background-color: var(--lightGreen)">
-            <div class="error-text">
-              <div>遇事不决，可问春风</div>
+        <div class="image-container">
+          <el-image class="my-el-image"
+                    v-once
+                    lazy
+                    :src="article.articleCover"
+                    fit="cover">
+            <div slot="error" class="image-slot myCenter" style="background-color: var(--lightGreen)">
+              <div class="error-text">
+                <div>遇事不决，可问春风</div>
+              </div>
             </div>
+          </el-image>
+          <div class="transformCenter hasVideo" v-if="article.hasVideo">
+            <svg viewBox="0 0 1024 1024" width="60" height="60">
+              <path
+                d="M514 114.3c-219.9 0-398.9 178.9-398.9 398.9 0.1 219.9 179 398.8 398.9 398.8 219.9 0 398.8-178.9 398.8-398.8S733.9 114.3 514 114.3z m173 421.9L437.1 680.5c-17.7 10.2-39.8-2.6-39.8-23V368.9c0-20.4 22.1-33.2 39.8-23L687 490.2c17.7 10.2 17.7 35.8 0 46z"
+                fill="#0C0C0C"></path>
+            </svg>
           </div>
-        </el-image>
+        </div>
       </div>
       <!-- 内容 -->
       <div class="recent-post-item-post" :class="{ leftImage: index % 2 === 0, rightImage: index % 2 !== 0 }">
@@ -278,6 +287,18 @@
     line-height: 1.8;
     letter-spacing: 8px;
     color: var(--white);
+  }
+
+  .image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hasVideo {
+    padding: 0 20px;
+    background: var(--maxMaxWhiteMask);
+    border-radius: 15px;
   }
 
   @media screen and (max-width: 700px) {

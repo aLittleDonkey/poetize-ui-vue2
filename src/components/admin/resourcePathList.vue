@@ -2,7 +2,7 @@
   <div>
     <div>
       <div class="handle-box">
-        <el-select clearable v-model="pagination.resourceType" placeholder="资源路径类型" class="handle-select mrb10">
+        <el-select clearable v-model="pagination.resourceType" placeholder="资源聚合类型" class="handle-select mrb10">
           <el-option
             v-for="(item, i) in resourceTypes"
             :key="i"
@@ -15,7 +15,7 @@
           <el-option key="2" label="禁用" :value="false"></el-option>
         </el-select>
         <el-button type="primary" icon="el-icon-search" @click="search()">搜索</el-button>
-        <el-button type="primary" @click="addResourcePathDialog = true">新增资源路径</el-button>
+        <el-button type="primary" @click="addResourcePathDialog = true">新增资源聚合</el-button>
       </div>
       <el-table :data="resourcePaths" border class="table" header-cell-class-name="table-header">
         <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
@@ -89,7 +89,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="资源路径"
+    <el-dialog title="资源聚合"
                :visible.sync="addResourcePathDialog"
                width="50%"
                :before-close="clearDialog"
@@ -98,6 +98,13 @@
                center>
       <div>
         <div>
+          <div class="myCenter">
+            <el-radio-group v-model="resourcePath.type">
+              <template v-for="item in resourceTypes">
+                <el-radio-button :label="item.value">{{ item.label }}</el-radio-button>
+              </template>
+            </el-radio-group>
+          </div>
           <div style="margin-bottom: 5px">标题：</div>
           <el-input maxlength="60" v-model="resourcePath.title"></el-input>
           <div style="margin-top: 10px;margin-bottom: 5px">分类：</div>
@@ -130,14 +137,6 @@
             </div>
           </div>
           <div style="margin-top: 10px;margin-bottom: 5px">资源类型：</div>
-          <el-select v-model="resourcePath.type" placeholder="资源路径类型" class="handle-select mrb10">
-            <el-option
-              v-for="(item, i) in resourceTypes"
-              :key="i"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
           <div style="margin-top: 10px;margin-bottom: 5px">备注：</div>
           <el-input :disabled="![].includes(resourcePath.type)"
                     maxlength="1000" v-model="resourcePath.remark" type="textarea"></el-input>
@@ -168,7 +167,7 @@
       return {
         resourceTypes: [
           {label: "友链", value: "friendUrl"},
-          {label: "恋爱图片", value: "lovePhoto"},
+          {label: "图片", value: "lovePhoto"},
           {label: "音乐", value: "funny"},
           {label: "收藏夹", value: "favorites"}
         ],

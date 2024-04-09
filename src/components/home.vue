@@ -3,7 +3,7 @@
     <!-- el过渡动画 -->
     <transition name="el-fade-in-linear">
       <!-- 导航栏 -->
-      <div v-show="toolbar.visible"
+      <div v-show="toolbar.visible || ($common.mobile() || mobile)"
            @mouseenter="hoverEnter = true"
            @mouseleave="hoverEnter = false"
            :class="[{ enter: toolbar.enter }, { hoverEnter: (hoverEnter || this.$route.path === '/favorite' || this.$route.path === '/travel') && !toolbar.enter }]"
@@ -45,19 +45,19 @@
               </el-dropdown-menu>
             </el-dropdown>
 
-            <!-- 爱情买卖 -->
+            <!-- 家 -->
             <li @click="$router.push({path: '/love'})">
               <div class="my-menu">
-                💋 <span>爱情买卖</span>
+                ❤️‍🔥 <span>家</span>
               </div>
             </li>
 
-            <!-- 旅拍 -->
-            <li @click="$router.push({path: '/travel'})">
-              <div class="my-menu">
-                🌏 <span>旅拍</span>
-              </div>
-            </li>
+<!--            &lt;!&ndash; 旅拍 &ndash;&gt;-->
+<!--            <li @click="$router.push({path: '/travel'})">-->
+<!--              <div class="my-menu">-->
+<!--                🌏 <span>旅拍</span>-->
+<!--              </div>-->
+<!--            </li>-->
 
             <!-- 百宝箱 -->
             <li @click="$router.push({path: '/favorite'})">
@@ -66,31 +66,27 @@
               </div>
             </li>
 
-            <!-- 聊天室 -->
-            <li @click="goIm()">
-              <div class="my-menu">
-                💬 <span>非礼勿言</span>
-              </div>
-            </li>
             <!-- 留言 -->
             <li @click="$router.push({path: '/message'})">
               <div class="my-menu">
                 📪 <span>留言</span>
               </div>
             </li>
-            <!-- 友人帐 -->
-            <li @click="$router.push({path: '/friend'})">
+
+            <!-- 聊天室 -->
+            <li @click="goIm()">
               <div class="my-menu">
-                💃 <span>友人帐</span>
+                💬 <span>联系我</span>
               </div>
             </li>
 
-            <!-- 关于 -->
-            <li @click="$router.push({path: '/about'})">
+            <!-- 后台 -->
+            <li @click="goAdmin()">
               <div class="my-menu">
-                🐟 <span>关于</span>
+                💻️ <span>后台</span>
               </div>
             </li>
+
             <!-- 个人中心 -->
             <li>
               <el-dropdown placement="bottom">
@@ -199,19 +195,19 @@
             </div>
           </li>
 
-          <!-- 爱情买卖 -->
+          <!-- 家 -->
           <li @click="smallMenu({path: '/love'})">
             <div>
-              💋 <span>爱情买卖</span>
+              ❤️‍🔥 <span>家</span>
             </div>
           </li>
 
-          <!-- 旅拍 -->
-          <li @click="smallMenu({path: '/travel'})">
-            <div>
-              🌏 <span>旅拍</span>
-            </div>
-          </li>
+<!--          &lt;!&ndash; 旅拍 &ndash;&gt;-->
+<!--          <li @click="smallMenu({path: '/travel'})">-->
+<!--            <div>-->
+<!--              🌏 <span>旅拍</span>-->
+<!--            </div>-->
+<!--          </li>-->
 
           <!-- 百宝箱 -->
           <li @click="smallMenu({path: '/favorite'})">
@@ -220,29 +216,24 @@
             </div>
           </li>
 
-          <!-- 聊天室 -->
-          <li @click="goIm()">
-            <div>
-              💬 <span>非礼勿言</span>
-            </div>
-          </li>
           <!-- 留言 -->
           <li @click="smallMenu({path: '/message'})">
             <div>
               📪 <span>留言</span>
             </div>
           </li>
-          <!-- 友人帐 -->
-          <li @click="smallMenu({path: '/friend'})">
+
+          <!-- 聊天室 -->
+          <li @click="goIm()">
             <div>
-              💃 <span>友人帐</span>
+              💬 <span>联系我</span>
             </div>
           </li>
 
-          <!-- 关于 -->
-          <li @click="smallMenu({path: '/about'})">
+          <!-- 后台 -->
+          <li @click="goAdmin()">
             <div>
-              🐟 <span>关于</span>
+              💻️ <span>后台</span>
             </div>
           </li>
 
@@ -276,7 +267,6 @@
 
 <script>
   import mousedown from '../utils/mousedown';
-  import constant from "../utils/constant";
 
   export default {
     data() {
@@ -343,13 +333,14 @@
       };
       this.$store.commit("changeToolbarStatus", toolbarStatus);
       this.getWebInfo();
+      this.getSysConfig();
       this.getSortInfo();
 
       this.mobile = document.body.clientWidth < 1100;
 
       window.addEventListener('resize', () => {
         let docWidth = document.body.clientWidth;
-        if (docWidth < 1100) {
+        if (docWidth < 810) {
           this.mobile = true;
         } else {
           this.mobile = false;
@@ -386,6 +377,11 @@
           window.open(this.$constant.imBaseURL + "?userToken=" + userToken + "&defaultStoreType=" + localStorage.getItem("defaultStoreType"));
         }
       },
+
+      goAdmin() {
+        window.open(this.$constant.webURL + "/admin");
+      },
+
       logout() {
         this.$http.get(this.$constant.baseURL + "/user/logout")
           .then((res) => {
@@ -414,6 +410,37 @@
               type: "error"
             });
           });
+      },
+      getSysConfig() {
+        this.$http.get(this.$constant.baseURL + "/sysConfig/listSysConfig")
+          .then((res) => {
+            if (!this.$common.isEmpty(res.data)) {
+              this.$store.commit("loadSysConfig", res.data);
+              this.buildCssPicture();
+            }
+          })
+          .catch((error) => {
+            this.$message({
+              message: error.message,
+              type: "error"
+            });
+          });
+      },
+      buildCssPicture() {
+        let root = document.querySelector(":root");
+        let webStaticResourcePrefix = this.$store.state.sysConfig['webStaticResourcePrefix'];
+        root.style.setProperty("--commentURL", "url(" + webStaticResourcePrefix + "assets/commentURL.png)");
+        root.style.setProperty("--springBg", "url(" + webStaticResourcePrefix + "assets/springBg.png)");
+        root.style.setProperty("--admireImage", "url(" + webStaticResourcePrefix + "assets/admireImage.jpg)");
+        root.style.setProperty("--toTop", "url(" + webStaticResourcePrefix + "assets/toTop.png)");
+        root.style.setProperty("--bannerWave1", "url(" + webStaticResourcePrefix + "assets/bannerWave1.png) repeat-x");
+        root.style.setProperty("--bannerWave2", "url(" + webStaticResourcePrefix + "assets/bannerWave2.png) repeat-x");
+        root.style.setProperty("--backgroundPicture", "url(" + webStaticResourcePrefix + "assets/backgroundPicture.jpg)");
+        root.style.setProperty("--toolbar", "url(" + webStaticResourcePrefix + "assets/toolbar.jpg)");
+        root.style.setProperty("--love", "url(" + webStaticResourcePrefix + "assets/love.jpg)");
+        const font = new FontFace("poetize-font", "url(" + webStaticResourcePrefix + "assets/font.woff2)");
+        font.load();
+        document.fonts.add(font);
       },
       getSortInfo() {
         this.$http.get(this.$constant.baseURL + "/webInfo/getSortInfo")

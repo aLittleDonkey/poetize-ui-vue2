@@ -6,7 +6,7 @@
               v-for="(value, key, index) in emojiListURL"
               :key="index"
               @click="addEmoji(key)">
-          <img class="emoji" :src="value" :title="key" width="24px" height="24px"/>
+          <img loading="lazy" class="emoji" :src="value" :title="key" width="24px" height="24px"/>
         </span>
       </div>
     </transition>
@@ -40,7 +40,7 @@
         for (let i = 0; i < emojiList.length; i++) {
           emojiName = "[" + emojiList[i] + "]";
           let j = i + 1;
-          url = this.$constant.qiniuDownload + "emoji/q" + j + ".gif";
+          url = this.$store.state.sysConfig['webStaticResourcePrefix'] + "emoji/q" + j + ".gif";
           result[emojiName] = url;
         }
         return result;

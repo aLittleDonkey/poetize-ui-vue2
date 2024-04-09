@@ -45,7 +45,7 @@
     },
 
     mounted() {
-
+      this.$common.imgShow(".process-line .pictureReg");
     },
 
     methods: {

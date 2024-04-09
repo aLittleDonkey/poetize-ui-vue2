@@ -7,7 +7,7 @@
         <el-image class="article-image my-el-image"
                   v-once
                   lazy
-                  :src="!$common.isEmpty(article.articleCover)?article.articleCover:$constant.random_image+new Date()+Math.floor(Math.random()*10)"
+                  :src="article.articleCover"
                   fit="cover">
           <div slot="error" class="image-slot">
             <div class="article-image"></div>
@@ -118,7 +118,7 @@
         <div class="article-container my-animation-slide-bottom">
           <div v-if="!$common.isEmpty(article.videoUrl)" style="margin-bottom: 20px">
             <videoPlayer :url="{src: $common.decrypt(article.videoUrl)}"
-                         :cover="!$common.isEmpty(article.articleCover)?article.articleCover:$constant.random_image+new Date()+Math.floor(Math.random()*10)">
+                         :cover="article.articleCover">
             </videoPlayer>
           </div>
 
@@ -149,7 +149,11 @@
               作者：{{article.username}}
             </div>
             <div>
-              版权声明：转载请注明文章出处
+              <span>版权&许可请详阅</span>
+              <span style="color: #38f;cursor: pointer"
+                    @click="copyrightDialogVisible = true">
+                版权声明
+              </span>
             </div>
           </blockquote>
           <!-- 订阅 -->
@@ -169,34 +173,79 @@
       <div style="background: var(--background)">
         <myFooter></myFooter>
       </div>
-
-      <div id="toc-button" @click="clickTocButton()">
-        <i class="fa fa-align-justify" aria-hidden="true"></i>
-      </div>
-
-      <el-dialog title="最新进展"
-                 :visible.sync="weiYanDialogVisible"
-                 width="40%"
-                 :append-to-body="true"
-                 :close-on-click-modal="false"
-                 destroy-on-close
-                 center>
-        <div>
-          <div class="myCenter" style="margin-bottom: 20px">
-            <el-date-picker
-              v-model="newsTime"
-              value-format="yyyy-MM-dd HH:mm:ss"
-              type="datetime"
-              align="center"
-              placeholder="选择日期时间">
-            </el-date-picker>
-          </div>
-          <commentBox :disableGraffiti="true"
-                      @submitComment="submitWeiYan">
-          </commentBox>
-        </div>
-      </el-dialog>
     </div>
+
+    <div id="toc-button" @click="clickTocButton()">
+      <i class="fa fa-align-justify" aria-hidden="true"></i>
+    </div>
+
+    <el-dialog title="版权声明"
+               :visible.sync="copyrightDialogVisible"
+               width="80%"
+               :append-to-body="true"
+               class="article-copy"
+               center>
+      <div style="display: flex;align-items: center;flex-direction: column">
+        <el-avatar shape="square" :size="35" :src="$store.state.webInfo.avatar"></el-avatar>
+        <div class="copyright-container">
+          <p>
+            {{ $store.state.webInfo.webName }}是指运行在{{ $constant.host }}域名及相关子域名上的网站，本条款描述了{{ $store.state.webInfo.webName }}的网站版权声明：
+          </p>
+          <ul>
+            <li>
+              {{ $store.state.webInfo.webName }}提供的所有文章、展示的图片素材等内容部分来源于互联网平台，仅供学习参考。如有侵犯您的版权，请联系{{ $store.state.webInfo.webName }}负责人，{{ $store.state.webInfo.webName }}承诺将在一个工作日内改正。
+            </li>
+            <li>
+              {{ $store.state.webInfo.webName }}不保证网站内容的全部准确性、安全性和完整性，请您在阅读、下载及使用过程中自行确认，{{ $store.state.webInfo.webName }}亦不承担上述资源对您造成的任何形式的损失或伤害。
+            </li>
+            <li>未经{{ $store.state.webInfo.webName }}允许，不得盗链、盗用本站内容和资源。</li>
+            <li>
+              {{ $store.state.webInfo.webName }}旨在为广大用户提供更多的信息；{{ $store.state.webInfo.webName }}不保证向用户提供的外部链接的准确性和完整性，该外部链接指向的不由本站实际控制的任何网页上的内容，{{ $store.state.webInfo.webName }}对其合法性亦概不负责，亦不承担任何法律责任。
+            </li>
+            <li>
+              {{ $store.state.webInfo.webName }}中的文章/视频（包括转载文章/视频）的版权仅归原作者所有，若作者有版权声明或文章从其它网站转载而附带有原所有站的版权声明者，其版权归属以附带声明为准；文章仅代表作者本人的观点，与{{ $store.state.webInfo.webName }}立场无关。
+            </li>
+            <li>
+              {{ $store.state.webInfo.webName }}自行编写排版的文章均采用
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" style="color: #38f;text-decoration: none;">
+                知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议
+              </a>
+            </li>
+            <li>
+              许可协议标识：
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                <img alt="知识共享许可协议"
+                     src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"
+                     style="margin-top: 5px">
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="最新进展"
+               :visible.sync="weiYanDialogVisible"
+               width="40%"
+               :append-to-body="true"
+               :close-on-click-modal="false"
+               destroy-on-close
+               center>
+      <div>
+        <div class="myCenter" style="margin-bottom: 20px">
+          <el-date-picker
+            v-model="newsTime"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            type="datetime"
+            align="center"
+            placeholder="选择日期时间">
+          </el-date-picker>
+        </div>
+        <commentBox :disableGraffiti="true"
+                    @submitComment="submitWeiYan">
+        </commentBox>
+      </div>
+    </el-dialog>
 
     <!-- 微信 -->
     <el-dialog title="密码"
@@ -204,6 +253,7 @@
                :visible.sync="showPasswordDialog"
                width="25%"
                :append-to-body="true"
+               :close-on-click-modal="false"
                destroy-on-close
                center>
       <div>
@@ -246,12 +296,13 @@
 
     data() {
       return {
-        id: this.$route.query.id,
+        id: this.$route.params.id,
         subscribe: false,
         article: {},
         articleContentHtml: "",
         treeHoleList: [],
         weiYanDialogVisible: false,
+        copyrightDialogVisible: false,
         newsTime: "",
         showPasswordDialog: false,
         password: "",
@@ -284,7 +335,7 @@
       scrollTop(scrollTop, oldScrollTop) {
         let isShow = scrollTop - window.innerHeight > 30;
         if (isShow) {
-          $("#toc-button").css("bottom", "15vh");
+          $("#toc-button").css("bottom", "14.1vh");
         } else {
           $("#toc-button").css("bottom", "8vh");
         }
@@ -453,6 +504,9 @@
             hasInnerContainers: false
           });
         }
+        if (this.$common.mobile()) {
+          $(".toc").css("display", "none");
+        }
       },
       addId() {
         let headings = $(".entry-content").find("h1, h2, h3, h4, h5, h6");
@@ -467,6 +521,7 @@
               const md = new MarkdownIt({breaks: true}).use(require('markdown-it-multimd-table'));
               this.articleContentHtml = md.render(this.article.articleContent);
               this.$nextTick(() => {
+                this.$common.imgShow(".entry-content img");
                 this.highlight();
                 this.addId();
                 this.getTocbot();
@@ -483,9 +538,11 @@
           .catch((error) => {
             if ("密码错误" === error.message.substr(0, 4)) {
               if (!this.$common.isEmpty(password)) {
+                localStorage.removeItem("article_password_" + this.id);
                 this.$message({
                   message: "密码错误，请重新输入！",
-                  type: "error"
+                  type: "error",
+                  customClass: "message-index"
                 });
               }
               this.tips = error.message.substr(4);
@@ -493,8 +550,11 @@
             } else {
               this.$message({
                 message: error.message,
-                type: "error"
+                type: "error",
+                customClass: "message-index"
               });
+              this.tips = error.message;
+              this.showPasswordDialog = true;
             }
           });
       },
@@ -743,6 +803,13 @@
 
   #toc-button:hover {
     color: var(--themeBackground);
+  }
+
+  .copyright-container {
+    color: var(--black);
+    line-height: 2.5;
+    padding: 0 30px 10px;
+    font-size: 16px;
   }
 
   @media screen and (max-width: 700px) {

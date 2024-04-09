@@ -4,6 +4,7 @@
       <el-select v-if="isBoss" v-model="pagination.commentType" placeholder="评论来源类型" style="margin-right: 10px">
         <el-option key="1" label="文章评论" value="article"></el-option>
         <el-option key="2" label="树洞留言" value="message"></el-option>
+        <el-option key="3" label="家庭祝福" value="love"></el-option>
       </el-select>
       <el-input class="my-input" type="number" style="width: 140px;margin-right: 10px" v-model="pagination.source"
                 placeholder="评论来源标识"></el-input>

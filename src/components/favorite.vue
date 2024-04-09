@@ -5,29 +5,26 @@
       <div class="favorite-header my-animation-slide-top">
         <!-- 背景图片 -->
         <video class="index-video" autoplay="autoplay" muted="muted" loop="loop"
-               :src="$constant.favoriteVideo">
+               :src="$store.state.sysConfig['webStaticResourcePrefix'] + 'assets/backgroundVideo.mp4'">
         </video>
-        <div style="position: absolute;left: 0;top: 0;padding: 20px">
+        <div style="position: absolute;left: 0;top: 0;padding: 5px 20px">
           <!-- 标题 -->
-          <div style="color: var(--white);margin: 10px">
-            <div>
-              记录
-            </div>
-            <div style="font-size: 36px;font-weight: bold;line-height: 2">
+          <div style="color: var(--white);margin: 0 10px">
+            <div style="font-size: 30px;font-weight: bold;line-height: 2">
               百宝箱
             </div>
           </div>
           <div class="card-container">
-            <!-- 收藏夹 -->
-            <div @click="changeFavorite(1)"
+            <!-- 友人帐 -->
+            <div @click="changeFavorite(3)"
                  class="card-item">
               <div class="favorite-image"></div>
               <div style="position: absolute;left: 0;top: 0;padding: 20px 25px 15px">
                 <div class="card-name">
-                  收藏夹
+                  友人帐
                 </div>
                 <div class="card-desc">
-                  将 poetize.cn 添加到您的收藏夹吧
+                  留下你的网站吧
                 </div>
               </div>
             </div>
@@ -45,6 +42,20 @@
                 </div>
               </div>
             </div>
+
+            <!-- 收藏夹 -->
+            <div @click="changeFavorite(1)"
+                 class="card-item">
+              <div class="favorite-image"></div>
+              <div style="position: absolute;left: 0;top: 0;padding: 20px 25px 15px">
+                <div class="card-name">
+                  收藏夹
+                </div>
+                <div class="card-desc">
+                  将本网站添加到您的收藏夹吧
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -52,7 +63,7 @@
       <!-- 内容 -->
       <div class="favorite-content">
         <!-- 收藏夹 -->
-        <div v-show="card === 1 && !$common.isEmpty(collects)" class="my-animation-slide-bottom">
+        <div v-show="card === 1 && !$common.isEmpty(collects)" class="my-animation-hideToShow">
           <div v-for="(value, key) in collects" :key="key" style="margin-top: 20px">
             <div class="collect-classify">
               {{key}}
@@ -78,8 +89,13 @@
         </div>
 
         <!-- 曲乐 -->
-        <div v-show="card === 2" class="my-animation-slide-bottom">
+        <div v-show="card === 2" class="my-animation-hideToShow">
           <funny></funny>
+        </div>
+
+        <!-- 友人帐 -->
+        <div v-show="card === 3" class="my-animation-hideToShow">
+          <friend></friend>
         </div>
       </div>
     </div>
@@ -95,11 +111,13 @@
 
   const myFooter = () => import( "./common/myFooter");
   const funny = () => import( "./funny");
+  const friend = () => import( "./friend");
 
   export default {
     components: {
       myFooter,
-      funny
+      funny,
+      friend
     },
 
     data() {
@@ -114,8 +132,7 @@
     watch: {},
 
     created() {
-      this.card = 1;
-      this.getCollect();
+      this.card = 3;
     },
 
     mounted() {
@@ -127,12 +144,12 @@
         window.open(url);
       },
       changeFavorite(card) {
-        this.card = card;
         if (card === 1) {
           if (this.$common.isEmpty(this.collects)) {
-            this.getCollect();
+            this.getCollect(card);
           }
         }
+        this.card = card;
       },
       getCollect() {
         this.$http.get(this.$constant.baseURL + "/webInfo/listCollect")
@@ -161,7 +178,7 @@
 
   .favorite-header {
     margin: 60px auto 30px;
-    height: 410px;
+    height: 330px;
     position: relative;
     overflow: hidden;
     border-radius: 20px;
@@ -302,21 +319,29 @@
     -webkit-box-orient: vertical;
   }
 
-  @media screen and (max-width: 640px) {
+  @media screen and (max-width: 906px) {
     .card-container {
       margin-top: 0;
     }
   }
 
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 906px) {
     .favorite-item {
       width: calc(100% / 3 - 20px);
     }
+
+    .favorite-header {
+      height: 360px;
+    }
   }
 
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 636px) {
     .favorite-item {
       width: calc(100% / 2 - 20px);
+    }
+
+    .favorite-header {
+      height: 500px;
     }
   }
 

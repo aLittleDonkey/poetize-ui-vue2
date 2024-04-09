@@ -1,29 +1,15 @@
 <template>
   <div>
-    <el-image style="animation: header-effect 2s"
-              class="background-image"
-              v-once
-              lazy
-              :src="$constant.friendBG"
-              fit="cover">
-      <div slot="error" class="image-slot background-image-error"></div>
-    </el-image>
-
-    <!-- 封面 -->
-    <div class="friend-head myCenter">
-      <h1 style="color: var(--white);z-index: 10;font-weight: 700;font-size: 45px">友人帐</h1>
-    </div>
-
     <div class="friend-wrap">
       <div class="friend-main">
         <!-- 添加友链 -->
         <div @click="clickLetter()" class="form-wrap">
           <!-- 信封上面 -->
-          <img class="before-img" :src="$constant.friendLetterTop" style="width: 100%"/>
+          <img class="before-img" :src="$store.state.sysConfig['webStaticResourcePrefix'] + 'assets/friendLetterTop.png'" style="width: 100%"/>
           <!-- 信 -->
           <div class="envelope" style="animation: hideToShow 2s">
             <div class="form-main">
-              <img :src="$constant.friendLetterMiddle" style="width: 100%"/>
+              <img :src="$store.state.sysConfig['webStaticResourcePrefix'] + 'assets/friendLetterMiddle.jpg'" style="width: 100%"/>
               <div>
                 <h3 style="text-align: center">有朋自远方来</h3>
                 <div>
@@ -58,13 +44,13 @@
                   </div>
                 </div>
                 <div>
-                  <img :src="$constant.friendLetterBiLi" style="width: 100%;margin: 5px auto"/>
+                  <img :src="$store.state.sysConfig['webStaticResourcePrefix'] + 'assets/friendLetterBiLi.png'" style="width: 100%;margin: 5px auto"/>
                 </div>
                 <p style="font-size: 12px;text-align: center;color: #999">欢迎交换友链</p>
               </div>
             </div>
           </div>
-          <img class="after-img" :src="$constant.friendLetterBottom" style="width: 100%"/>
+          <img class="after-img" :src="$store.state.sysConfig['webStaticResourcePrefix'] + 'assets/friendLetterBottom.png'" style="width: 100%"/>
         </div>
 
         <div style="font-size: 20px;font-weight: bold;margin-top: 40px">🌸本站信息</div>
@@ -97,20 +83,15 @@
         <card :resourcePathList="friendList['🥇友情链接']" @clickResourcePath="clickFriend"></card>
       </div>
     </div>
-
-    <!-- 页脚 -->
-    <myFooter></myFooter>
   </div>
 </template>
 
 <script>
-  const myFooter = () => import( "./common/myFooter");
   const card = () => import( "./common/card");
   const proButton = () => import( "./common/proButton");
 
   export default {
     components: {
-      myFooter,
       card,
       proButton
     },
@@ -226,19 +207,6 @@
 
 <style scoped>
 
-  .friend-head {
-    height: 300px;
-    position: relative;
-  }
-
-  .friend-head::before {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, .3);
-    content: '';
-  }
-
   .friend-main {
     max-width: 1200px;
     margin: 40px auto;
@@ -307,7 +275,6 @@
   }
 
   .friend-wrap {
-    padding: 0 20px;
     color: var(--black);
   }
 
@@ -387,10 +354,6 @@
   @media screen and (max-width: 500px) {
     .friend-main {
       padding: 40px 15px;
-    }
-
-    .friend-wrap {
-      padding: 0 10px
     }
   }
 </style>
