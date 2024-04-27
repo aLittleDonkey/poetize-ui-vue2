@@ -11,7 +11,7 @@ POETIZE：作诗，有诗意地描写。
 ## Star
 ps: 虽然我知道，大部分人都是来了直接下载源代码后就潇洒的离开。
 
-虽然我知道现实就是如此的残酷，但我还是要以我萤虫之力对各位到来的同仁发出一声诚挚的嘶吼：`Star`，`Star`，`Star`
+虽然我知道现实就是如此的残酷，但我还是要以我萤虫之力对各位到来的同仁发出一声诚挚的嘶吼：`Star`，`Star`，`Star`。
 
 相信各位同仁看到下面的项目介绍一定会心动的，心想`怎么没有早点遇到这么漂亮的博客项目`。在搭建这个美丽的网站同时，何不`Star`，为这个项目点赞呢！
 
@@ -25,9 +25,23 @@ ps: 虽然我知道，大部分人都是来了直接下载源代码后就潇洒�
 - 聊天室前端：https://gitee.com/littledokey/poetize-im-vue3.git
 - 后端：https://gitee.com/littledokey/poetize-server.git
 - 博客前端、聊天室前端、后端汇总版（上述三个仓库放在一个仓库里，代码无差别）：https://gitee.com/littledokey/poetize
-- 七牛云登录/注册地址（文件服务器/CDN）：https://s.qiniu.com/Mz6Z32
+- 七牛云登录/注册地址（文件服务/CDN）：https://s.qiniu.com/Mz6Z32
 - 网站介绍与更新记录：https://poetize.cn/article/20
 - 部署文档和静态资源：https://poetize.cn/article/26
+
+## 本地启动
+Vue2：
+1. npm install
+2. npm run serve
+
+Vue3：
+1. npm install
+2. npm run serve
+
+SpringBoot：
+1. 导入SQL文件到数据库（poetry.sql）
+2. 配置数据库连接（application.yml里面的datasource信息）
+3. 启动（PoetryApplication）
 
 ## 网站简介
 这是一个 SpringBoot + Vue2 + Vue3 的产物，支持移动端自适应，配有完备的前台和后台管理功能。
@@ -38,14 +52,13 @@ ps: 虽然我知道，大部分人都是来了直接下载源代码后就潇洒�
 
 本网站采用前后端分离进行实现，两个前端项目通过Nginx代理，后端使用Java。
 
-启动网站需要安装Nginx、Java、MySQL，然后打包前后端项目并部署，详细部署流程请见[部署文档和静态资源：https://poetize.cn/article/26](https://poetize.cn/article/26)。
+部署网站需要安装Nginx、Java、MySQL，然后打包前后端项目并部署。
 
 文件服务可以使用七牛云，也可以使用服务器。默认使用服务器。
 
 Vue3（IM 聊天室系统）是非必须的。如果部署，则需要依赖博客，然后从博客的“联系我”进入，因为登录模块在博客。
 
-## 网站示例（详细示例请见官方网站：[poetize.cn](https://poetize.cn)）
->网站介绍与更新记录请移步：[https://poetize.cn/article/20](https://poetize.cn/article/20)，后续更新将在这里记录与发布。
+## 网站示例（详细示例请见官方网站：[https://poetize.cn](https://poetize.cn)）
 
 ### 博客
 
@@ -157,14 +170,37 @@ Vue3（IM 聊天室系统）是非必须的。如果部署，则需要依赖博�
 
 ========================================================================
 
+## 使用功能
+网站介绍与更新记录：[https://poetize.cn/article/20](https://poetize.cn/article/20)。
+
+### 功能介绍
+本网站以诗词为基底，通过随机诗句API，每次进入都会有一句诗映入眼帘。
+
+详情请见：[POETIZE - 功能介绍](https://poetize.cn/article/89)。
+
+### 文章系统
+文章在后台使用MarkDown编写，通过解析生成不同的标签，达到自定义美化效果。
+
+详情请见：[POETIZE - 文章系统](https://poetize.cn/article/88)。
+
+### 用户系统
+详情请见：[POETIZE - 用户系统](https://poetize.cn/article/87)。
+
+### 随笔
+详情请见：[POETIZE - 随笔（朋友圈、点点滴滴、微言）](https://poetize.cn/article/86)。
+
+### 资源聚合
+详情请见：[POETIZE - 资源聚合](https://poetize.cn/article/85)。
+
+### 文件服务
+详情请见：[POETIZE - 文件服务](https://poetize.cn/article/84)。
+
 ## 作者微信号：poetize-sara
 - 接收付费服务（定制开发、部署）
-- 接收毕业设计指导
-
-## 开源不易，欢迎赞助这个项目维持网站运行，您将获得[部署文档和静态资源：https://poetize.cn/article/26](https://poetize.cn/article/26)
+- 接收商业合作
 
 ## 欢迎关注作者B站
-B站搜索用户【寻国记】。
+B站搜索用户【POETIZE】。
 
 【挑战最美博客！个人博客网站食用教程。这是一个 SpringBoot 与 Vue 的产物，在此公开，一起学习，共同成长。】
 https://www.bilibili.com/video/BV1eM41167Ks/?share_source=copy_web
