@@ -21,13 +21,13 @@ ps: 虽然我知道，大部分人都是来了直接下载源代码后就潇洒�
 后端技术：Java，SpringBoot，MySQL，Mybatis-Plus，t-io，qiniu-java-sdk，spring-boot-starter-mail
 
 ## 项目地址
-- 博客前端：https://gitee.com/littledokey/poetize-vue2.git
-- 聊天室前端：https://gitee.com/littledokey/poetize-im-vue3.git
-- 后端：https://gitee.com/littledokey/poetize-server.git
-- 博客前端、聊天室前端、后端汇总版（上述三个仓库放在一个仓库里，代码无差别）：https://gitee.com/littledokey/poetize
+- 博客前端（开源版）：https://gitee.com/littledokey/poetize-vue2.git
+- 聊天室前端（开源版）：https://gitee.com/littledokey/poetize-im-vue3.git
+- 后端（开源版）：https://gitee.com/littledokey/poetize-server.git
+- 博客前端、聊天室前端、后端汇总版（上述三个仓库放在一个仓库里，代码无差别）（开源版）：https://gitee.com/littledokey/poetize
 - 七牛云登录/注册地址（文件服务/CDN）：https://s.qiniu.com/Mz6Z32
 - 网站介绍与更新记录：https://poetize.cn/article/20
-- 部署文档和静态资源：https://poetize.cn/article/26
+- 部署文档和资源（PRO版）：https://poetize.cn/article/26
 
 ## 本地启动
 Vue2：
@@ -42,6 +42,15 @@ SpringBoot：
 1. 导入SQL文件到数据库（poetry.sql）
 2. 配置数据库连接（application.yml里面的datasource信息）
 3. 启动（PoetryApplication）
+
+## 项目介绍
+从2021年6月16日开始搭建项目，到2022年8月21日第一个开源版发布，再到2024年4月10日最后一个开源版结束。期间曾因为换工作而暂停几个月，也因老头环而鸽了几个月，至此开源版正式完结。
+
+项目开源版经历了大大小小的更新，每次更新都是在美观度上的精雕细琢，也修复了很多问题，添加了很多功能。项目也推出了PRO版，提供持续优化与更新，部署资料与技术支持。
+
+开源版只需要在拉取项目，按照上述说明直接启动，但需要一定的编程能力。PRO版就需要您赞助本项目了。
+
+欢迎使用开源版的朋友，也感谢对PRO版的支持。
 
 ## 网站简介
 这是一个 SpringBoot + Vue2 + Vue3 的产物，支持移动端自适应，配有完备的前台和后台管理功能。
@@ -196,7 +205,8 @@ Vue3（IM 聊天室系统）是非必须的。如果部署，则需要依赖博�
 详情请见：[POETIZE - 文件服务](https://poetize.cn/article/84)。
 
 ## 作者微信号：poetize-sara
-- 接收付费服务（定制开发、部署）
+- 接收付费服务（定制开发、部署、答疑）
+- 接收毕业设计指导
 - 接收商业合作
 
 ## 欢迎关注作者B站
