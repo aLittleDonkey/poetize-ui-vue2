@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "//": "!!注意,Linux用户需要将下面的set换为export,将&换为&& !!",
     "serve": "set NODE_OPTIONS=--openssl-legacy-provider & vue-cli-service serve",
     "build": "set NODE_OPTIONS=--openssl-legacy-provider & vue-cli-service build",
     "lint": "vue-cli-service lint"
